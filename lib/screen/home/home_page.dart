@@ -3,7 +3,6 @@ import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/screen/cart/product_cart.dart';
 import 'package:ecommerce_store/screen/favorite/fav_page.dart';
 import 'package:ecommerce_store/screen/home/components/product.dart';
-import 'package:ecommerce_store/screen/profile/components/edit_profile.dart';
 import 'package:ecommerce_store/screen/profile/user_page.dart';
 import 'package:ecommerce_store/screen/sidebar/sidebar_view.dart';
 import 'package:flutter/material.dart';
@@ -55,25 +54,26 @@ class _ProductPageState extends State<ProductPage>
     });
   }
 
+  deleteitemcallback() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     List page = [
       Body(
-        controller: _controller,
-        scaleAnimation: _scaleAnimation,
-        oncallbackFuntion: oncallback,
-      ),
+          controller: _controller,
+          scaleAnimation: _scaleAnimation,
+          oncallbackFuntion: oncallback),
       FavoriteScreen(
-        controller: _controller,
-        scaleAnimation: _scaleAnimation,
-        oncallbackFuntion: oncallback,
-      ),
+          controller: _controller,
+          scaleAnimation: _scaleAnimation,
+          oncallbackFuntion: oncallback),
       UserProfileScreen(
-        controller: _controller,
-        scaleAnimation: _scaleAnimation,
-        oncallbackFuntion: oncallback,
-      ),
-      const CartScreen(),
+          controller: _controller,
+          scaleAnimation: _scaleAnimation,
+          oncallbackFuntion: oncallback),
+      CartScreen(callbackFunction: deleteitemcallback),
     ];
     return Scaffold(
       backgroundColor: kbackground,

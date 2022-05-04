@@ -6,7 +6,11 @@ import 'package:ecommerce_store/screen/favorite/components/empty_wishlist.dart';
 import 'package:flutter/material.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({Key? key}) : super(key: key);
+  final Function callbackFunction;
+  const CartScreen({
+    Key? key,
+    required this.callbackFunction,
+  }) : super(key: key);
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -40,6 +44,7 @@ class _CartScreenState extends State<CartScreen> {
                   cartProducts.removeRange(0, cartProducts.length);
                 }
               });
+              widget.callbackFunction();
             },
             child: Container(
               margin: EdgeInsets.only(right: size.width * .1),

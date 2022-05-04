@@ -210,7 +210,8 @@ class _UserPageOptionsState extends State<UserPageOptions> {
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed("/${options[index]}/");
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => pages[index]));
       },
       child: Container(
         margin: EdgeInsets.symmetric(

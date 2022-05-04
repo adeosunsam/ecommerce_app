@@ -13,7 +13,7 @@ class SearchBar extends StatelessWidget {
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.only(top: size.height * 0.04),
-        height: size.height * 0.065,
+        height: size.height * 0.063,
         width: size.width * 0.65,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
@@ -28,7 +28,7 @@ class SearchBar extends StatelessWidget {
               padding: const EdgeInsets.only(top: 1),
               child: Image.asset(
                 'assets/images/search.png',
-                scale: 2.3,
+                scale: 2.5,
                 color: const Color.fromARGB(255, 90, 89, 89),
               ),
             ),
@@ -38,7 +38,7 @@ class SearchBar extends StatelessWidget {
           style: const TextStyle(
             color: Colors.black,
             fontFamily: 'Raleway',
-            fontSize: 18,
+            fontSize: 20,
           ),
         ),
       ),

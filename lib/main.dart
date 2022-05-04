@@ -1,6 +1,3 @@
-import 'package:ecommerce_store/components/route.dart';
-import 'package:ecommerce_store/screen/home/home_page.dart';
-import 'package:ecommerce_store/screen/profile/components/edit_profile.dart';
 import 'package:ecommerce_store/screen/splash/splash_screeen.dart';
 import 'package:flutter/material.dart';
 
@@ -22,13 +19,6 @@ class MyApp extends StatelessWidget {
         textTheme: Theme.of(context).textTheme.apply(bodyColor: Colors.grey),
       ),
       home: const WelcomeScreen(),
-      routes: {
-        editProfileRoute: (context) => const EditProfile(),
-        shoppingRoute: (context) => const Shoppingaddress(),
-        orderHistoryRoute: (context) => const Orderhistory(),
-        notificationRoute: (context) => const Notifications(),
-        cardRoute: (context) => const Cards(),
-      },
     );
   }
 }
