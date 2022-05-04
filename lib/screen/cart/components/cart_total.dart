@@ -19,31 +19,34 @@ class CartTotalPrice extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: size.width * .1),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Total',
-                style: TextStyle(
-                  fontFamily: 'Raleway',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18,
-                  color: Colors.black,
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Total',
+                  style: TextStyle(
+                    fontFamily: 'Raleway',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-              Text(
-                '\$${cartProducts.fold<double>(0, (a, b) => a + b.total)}',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Raleway',
-                  color: kPrimary,
+                Text(
+                  '\$${cartProducts.fold<double>(0, (a, b) => a + b.total)}',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Raleway',
+                    color: kPrimary,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           SizedBox(
-            height: size.height * .04,
+            height: size.height * .03,
           ),
           SizedBox(
             child: RoundedButton(

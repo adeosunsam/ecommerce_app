@@ -1,5 +1,6 @@
 import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/screen/checkout/components/shipping_info_detail.dart';
+import 'package:ecommerce_store/screen/profile/components/edit_profile.dart';
 import 'package:flutter/material.dart';
 
 class ShippingInformation extends StatelessWidget {
@@ -12,31 +13,39 @@ class ShippingInformation extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'Shipping information',
-              style: TextStyle(
-                fontFamily: 'Raleway',
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Colors.black87,
-              ),
-            ),
-            InkWell(
-              onTap: () {},
-              child: const Text(
-                'change',
+        Container(
+          margin: EdgeInsets.symmetric(vertical: size.height * .03),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Shipping information',
                 style: TextStyle(
-                  color: kPrimary,
                   fontFamily: 'Raleway',
-                  fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.black87,
                 ),
               ),
-            ),
-          ],
+              InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Shoppingaddress(),
+                  ),
+                ),
+                child: const Text(
+                  'change',
+                  style: TextStyle(
+                    color: kPrimary,
+                    fontFamily: 'Raleway',
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         Container(
           height: size.height * .2,

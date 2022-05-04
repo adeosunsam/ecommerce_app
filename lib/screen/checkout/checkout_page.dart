@@ -1,5 +1,6 @@
 import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/screen/cart/components/cart_total.dart';
+import 'package:ecommerce_store/screen/checkout/components/payment_method.dart';
 import 'package:ecommerce_store/screen/checkout/components/shipping_info.dart';
 import 'package:flutter/material.dart';
 
@@ -33,12 +34,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
       body: Column(
         children: [
           Container(
-            height: size.height * .63,
+            height: size.height * .65,
             margin: EdgeInsets.symmetric(horizontal: size.width * .1),
             child: SingleChildScrollView(
               child: Column(
                 children: const [
                   ShippingInformation(),
+                  PaymentMethod(),
                 ],
               ),
             ),
