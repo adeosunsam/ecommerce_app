@@ -1,9 +1,12 @@
 import 'package:ecommerce_store/constants.dart';
+import 'package:ecommerce_store/entity/products.dart';
 import 'package:flutter/material.dart';
 
 class CategoryBuilder extends StatefulWidget {
+  final Function callbackCategory;
   const CategoryBuilder({
     Key? key,
+    required this.callbackCategory,
   }) : super(key: key);
 
   @override
@@ -11,7 +14,7 @@ class CategoryBuilder extends StatefulWidget {
 }
 
 class _CategoryBuilderState extends State<CategoryBuilder> {
-  List<String> category = ["Wearable", "Laptops", "Phones", "Drones"];
+  List<String> category = getDistinctCategory();
   int selectedIndex = 0;
 
   @override
@@ -39,6 +42,9 @@ class _CategoryBuilderState extends State<CategoryBuilder> {
           setState(() {
             selectedIndex = index;
           });
+          List<Product> productByCategory =
+              products.where((e) => e.category == category[index]).toList();
+          widget.callbackCategory(productByCategory);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +60,9 @@ class _CategoryBuilderState extends State<CategoryBuilder> {
             ),
             Container(
               height: 2,
-              width: size.width * 0.15,
+              width: category[index].length >= 6
+                  ? size.width * 0.15
+                  : size.width * 0.1,
               margin: const EdgeInsets.only(top: 5),
               decoration: BoxDecoration(
                 border: Border.all(

@@ -1,5 +1,5 @@
 class Product {
-  final String image, title, description, name;
+  final String image, title, description, name, category;
   int price, quantity, total;
   final int id;
 
@@ -8,6 +8,7 @@ class Product {
     required this.title,
     required this.quantity,
     required this.description,
+    required this.category,
     required this.total,
     required this.price,
     required this.id,
@@ -15,11 +16,45 @@ class Product {
   });
 }
 
+enum ProductCategory {
+  watches,
+  gadgets,
+  laptops,
+  phones,
+  ipads,
+}
+
+String productValues(ProductCategory product) {
+  switch (product) {
+    case ProductCategory.watches:
+      return 'Watches';
+    case ProductCategory.gadgets:
+      return 'Gadgets';
+    case ProductCategory.laptops:
+      return 'Laptops';
+    case ProductCategory.phones:
+      return 'Phones';
+    case ProductCategory.ipads:
+      return 'Ipads';
+    default:
+      return '';
+  }
+}
+
+List<String> getDistinctCategory() {
+  var getDistinct = <String>{};
+  return products
+      .where((e) => getDistinct.add(e.category))
+      .map((e) => e.category)
+      .toList();
+}
+
 List<Product> products = [
   Product(
     id: 1,
     title: '2020 Apple iPad Air 10.9"',
     name: 'Apple iPad',
+    category: productValues(ProductCategory.ipads),
     quantity: 1,
     price: 579,
     total: 579,
@@ -30,6 +65,7 @@ List<Product> products = [
   Product(
     id: 2,
     name: "Apple Watch",
+    category: productValues(ProductCategory.watches),
     title: '',
     quantity: 1,
     price: 359,
@@ -40,6 +76,7 @@ List<Product> products = [
   Product(
     id: 3,
     name: "Apple MacBook",
+    category: productValues(ProductCategory.laptops),
     title: '',
     quantity: 1,
     price: 234,
@@ -50,6 +87,7 @@ List<Product> products = [
   Product(
     id: 4,
     name: "Apple iPhone",
+    category: productValues(ProductCategory.phones),
     title: '',
     quantity: 1,
     price: 234,
@@ -61,6 +99,7 @@ List<Product> products = [
     id: 5,
     title: "APPLE AirPods Pro - White",
     name: 'APPLE AirPods',
+    category: productValues(ProductCategory.gadgets),
     quantity: 1,
     price: 234,
     total: 234,
@@ -71,6 +110,7 @@ List<Product> products = [
     id: 6,
     title: "",
     name: 'APPLE iMac',
+    category: productValues(ProductCategory.gadgets),
     quantity: 1,
     price: 234,
     total: 234,

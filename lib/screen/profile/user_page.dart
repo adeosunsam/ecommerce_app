@@ -84,87 +84,98 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ],
                     ),
                   ),
-                  Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.symmetric(
-                      horizontal: size.width * 0.1,
-                      vertical: size.height * 0.02,
-                    ),
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: size.height * 0.18,
-                          width: size.width * 0.8,
-                          margin: EdgeInsets.only(top: size.height * 0.05),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.109,
-                          width: size.height * 0.4,
-                          child: FittedBox(
-                            child: CircleAvatar(
-                              child: ClipOval(
-                                child: Image.asset(
-                                  'assets/images/user.jpeg',
-                                  height: 90,
-                                  width: 50,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: size.height * 0.12,
-                          left: size.width * 0.31,
-                          child: const Text(
-                            'John Doe',
-                            style: TextStyle(
-                              fontFamily: 'Raleway',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: size.height * 0.15,
-                          left: size.width * .05,
-                          child: SvgPicture.asset(
-                            'assets/icons/location.svg',
-                            width: 22,
-                          ),
-                        ),
-                        Positioned(
-                          width: size.height * 0.4,
-                          top: size.height * 0.15,
-                          left: size.width * .05,
-                          child: Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: size.width * 0.1),
-                            child: const Text(
-                              "Address: 43 Oxford Road M13 4GR Manchester, UK",
-                              style: TextStyle(
-                                fontFamily: 'Raleway',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  const UserProfile(),
                   const UserPageOptions(),
                 ],
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class UserProfile extends StatelessWidget {
+  const UserProfile({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.symmetric(
+        horizontal: size.width * 0.1,
+        vertical: size.height * 0.02,
+      ),
+      child: Stack(
+        children: [
+          Container(
+            height: size.height * 0.18,
+            width: size.width * 0.8,
+            margin: EdgeInsets.only(top: size.height * 0.05),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          SizedBox(
+            height: size.height * 0.109,
+            width: size.height * 0.4,
+            child: FittedBox(
+              child: CircleAvatar(
+                child: ClipOval(
+                  child: Image.asset(
+                    'assets/images/user.jpeg',
+                    height: 90,
+                    width: 50,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: size.height * 0.12,
+            left: size.width * 0.31,
+            child: const Text(
+              'John Doe',
+              style: TextStyle(
+                fontFamily: 'Raleway',
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          Positioned(
+            top: size.height * 0.15,
+            left: size.width * .05,
+            child: SvgPicture.asset(
+              'assets/icons/location.svg',
+              width: 22,
+            ),
+          ),
+          Positioned(
+            width: size.height * 0.4,
+            top: size.height * 0.15,
+            left: size.width * .05,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+              child: const Text(
+                "Address: 43 Oxford Road M13 4GR Manchester, UK",
+                style: TextStyle(
+                  fontFamily: 'Raleway',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -226,22 +237,24 @@ class _UserPageOptionsState extends State<UserPageOptions> {
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(
-              option,
-              style: const TextStyle(
-                fontFamily: 'Raleway',
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: Colors.black,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                option,
+                style: const TextStyle(
+                  fontFamily: 'Raleway',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
               ),
-            ),
-            const Icon(
-              Icons.arrow_forward_ios,
-              size: 17,
-            )
-          ]),
+              const Icon(
+                Icons.arrow_forward_ios,
+                size: 17,
+              )
+            ],
+          ),
         ),
       ),
     );

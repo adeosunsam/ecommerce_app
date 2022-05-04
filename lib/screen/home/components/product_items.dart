@@ -3,14 +3,15 @@ import 'package:ecommerce_store/screen/home/components/product_item_builder.dart
 import 'package:flutter/material.dart';
 
 class Items extends StatefulWidget {
+  final List<Product> listProduct;
   const Items({
     Key? key,
+    required this.listProduct,
   }) : super(key: key);
 
   @override
   State<Items> createState() => _ItemsState();
 }
-//List of Product coming in as product;
 
 class _ItemsState extends State<Items> {
   @override
@@ -19,11 +20,11 @@ class _ItemsState extends State<Items> {
     return SizedBox(
       height: size.height * 0.43,
       child: ListView.builder(
-          itemCount: products.length,
+          itemCount: widget.listProduct.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             return ItemBuider(
-              product: products[index],
+              product: widget.listProduct[index],
             );
           }),
     );

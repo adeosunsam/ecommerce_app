@@ -1,5 +1,6 @@
 import 'package:ecommerce_store/components/search_bar.dart';
 import 'package:ecommerce_store/constants.dart';
+import 'package:ecommerce_store/entity/products.dart';
 import 'package:ecommerce_store/screen/home/components/category_builder.dart';
 import 'package:ecommerce_store/screen/home/components/product_items.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,14 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   bool isCollapsed = true;
   final Duration duration = const Duration(milliseconds: 300);
+
+  List<Product> listProducts =
+      products.where((e) => e.category == 'Ipads').toList();
+  callback(categoryproduct) {
+    setState(() {
+      listProducts = categoryproduct;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +101,8 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                   SizedBox(height: size.height * 0.04),
-                  const CategoryBuilder(),
-                  const Items(),
+                  CategoryBuilder(callbackCategory: callback),
+                  Items(listProduct: listProducts),
                   SizedBox(height: size.height * 0.02),
                   Padding(
                     padding: const EdgeInsets.only(right: 20),
