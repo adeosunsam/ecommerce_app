@@ -4,8 +4,12 @@ import 'package:ecommerce_store/entity/cart_product.dart';
 import 'package:flutter/material.dart';
 
 class CartTotalPrice extends StatelessWidget {
+  final String text;
+  final VoidCallback press;
   const CartTotalPrice({
     Key? key,
+    required this.text,
+    required this.press,
   }) : super(key: key);
 
   @override
@@ -45,8 +49,8 @@ class CartTotalPrice extends StatelessWidget {
             child: RoundedButton(
               buttonColor: kPrimary,
               textColor: Colors.white,
-              text: 'Checkout',
-              press: () {},
+              text: text,
+              press: press,
             ),
           ),
         ],

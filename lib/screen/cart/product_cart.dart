@@ -2,6 +2,7 @@ import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/entity/cart_product.dart';
 import 'package:ecommerce_store/screen/cart/components/cart_body.dart';
 import 'package:ecommerce_store/screen/cart/components/cart_total.dart';
+import 'package:ecommerce_store/screen/checkout/checkout_page.dart';
 import 'package:ecommerce_store/screen/favorite/components/empty_wishlist.dart';
 import 'package:flutter/material.dart';
 
@@ -98,8 +99,15 @@ class _CartScreenBodyState extends State<CartScreenBody> {
             ),
           ),
         ),
-        // ignore: prefer_const_constructors
-        CartTotalPrice(),
+        CartTotalPrice(
+          press: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CheckOutScreen(),
+            ),
+          ),
+          text: 'Checkout',
+        ),
       ],
     );
   }
