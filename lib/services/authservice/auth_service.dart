@@ -1,4 +1,5 @@
 import 'package:ecommerce_store/services/authservice/iauth_service.dart';
+import 'package:ecommerce_store/utility/sharedconstant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthServices implements IAuthService {
@@ -15,5 +16,11 @@ class AuthServices implements IAuthService {
   }) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(key, value);
+  }
+
+  @override
+  Future logOut() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove(SharedConstants.user);
   }
 }

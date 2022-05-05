@@ -3,6 +3,7 @@ import 'package:ecommerce_store/components/rounded_button.dart';
 import 'package:ecommerce_store/components/text_input_field.dart';
 import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/services/authservice/auth_provider.dart';
+import 'package:ecommerce_store/utility/sharedconstant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -98,7 +99,7 @@ class _LoginFieldState extends State<LoginField> {
             RoundedButton(
                 press: () async {
                   await AuthProvider.fromapi().setSharedPref(
-                    key: 'user',
+                    key: SharedConstants.user,
                     value: 'value',
                   );
                   Navigator.of(context).pop();

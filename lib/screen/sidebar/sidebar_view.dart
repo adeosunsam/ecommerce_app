@@ -1,6 +1,7 @@
 import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/screen/login/login_screen.dart';
 import 'package:ecommerce_store/screen/sidebar/components/sidebar_menu.dart';
+import 'package:ecommerce_store/services/authservice/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -51,6 +52,7 @@ class Page extends StatelessWidget {
                       SizedBox(width: size.width * .025),
                       InkWell(
                         onTap: () {
+                          AuthProvider.fromapi().logOut();
                           Navigator.push(
                               context,
                               MaterialPageRoute(

@@ -16,4 +16,7 @@ class AuthProvider implements IAuthService {
         key: key,
         value: value,
       );
+
+  @override
+  Future logOut() => service.logOut();
 }

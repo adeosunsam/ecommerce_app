@@ -2,6 +2,7 @@ import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/entity/cart_product.dart';
 import 'package:ecommerce_store/screen/login/login_screen.dart';
 import 'package:ecommerce_store/services/authservice/auth_provider.dart';
+import 'package:ecommerce_store/utility/sharedconstant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -79,7 +80,8 @@ class _BottomNavigatorState extends State<BottomNavigator> {
   }
 
   _onItemTapped(int index) async {
-    final userPrefs = await AuthProvider.fromapi().getSharedPref(key: 'user');
+    final userPrefs =
+        await AuthProvider.fromapi().getSharedPref(key: SharedConstants.user);
     setState(() {
       _selectedIndex = index;
     });
