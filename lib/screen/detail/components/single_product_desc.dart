@@ -10,10 +10,12 @@ import 'package:ecommerce_store/utility/item_already_present.dart';
 import 'package:flutter/material.dart';
 
 class SingleProductDescription extends StatefulWidget {
+  final Function oncallbackFunction;
   final Product product;
   const SingleProductDescription({
     Key? key,
     required this.product,
+    required this.oncallbackFunction,
   }) : super(key: key);
 
   @override
@@ -26,7 +28,6 @@ class _SingleProductDescriptionState extends State<SingleProductDescription> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      padding: EdgeInsets.only(top: size.height * 0.45),
       margin: EdgeInsets.symmetric(
         horizontal: size.width * 0.1,
       ),
@@ -56,7 +57,9 @@ class _SingleProductDescriptionState extends State<SingleProductDescription> {
           SizedBox(height: size.height * 0.01),
           const ProductColor(),
           SizedBox(height: size.height * 0.03),
-          CollapseDescription(text: widget.product.description),
+          CollapseDescription(
+              callbackFunction: widget.oncallbackFunction,
+              text: widget.product.description),
           SizedBox(height: size.height * 0.03),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

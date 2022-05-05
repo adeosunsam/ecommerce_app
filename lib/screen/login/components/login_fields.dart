@@ -2,8 +2,10 @@ import 'package:ecommerce_store/components/password_input_field.dart';
 import 'package:ecommerce_store/components/rounded_button.dart';
 import 'package:ecommerce_store/components/text_input_field.dart';
 import 'package:ecommerce_store/constants.dart';
+import 'package:ecommerce_store/services/authservice/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginField extends StatefulWidget {
   const LoginField({
@@ -94,7 +96,13 @@ class _LoginFieldState extends State<LoginField> {
             ),
             SizedBox(height: size.height * 0.03),
             RoundedButton(
-                press: () {},
+                press: () async {
+                  await AuthProvider.fromapi().setSharedPref(
+                    key: 'user',
+                    value: 'value',
+                  );
+                  Navigator.of(context).pop();
+                },
                 buttonColor: kPrimary,
                 textColor: Colors.white,
                 text: 'Login'),

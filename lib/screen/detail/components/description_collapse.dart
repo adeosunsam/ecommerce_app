@@ -2,9 +2,11 @@ import 'package:ecommerce_store/constants.dart';
 import 'package:flutter/material.dart';
 
 class CollapseDescription extends StatefulWidget {
+  final Function callbackFunction;
   const CollapseDescription({
     Key? key,
     required this.text,
+    required this.callbackFunction,
   }) : super(key: key);
 
   final String text;
@@ -47,6 +49,7 @@ class _CollapseDescriptionState extends State<CollapseDescription> {
             setState(() {
               showAll = !showAll;
             });
+            widget.callbackFunction();
           },
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,

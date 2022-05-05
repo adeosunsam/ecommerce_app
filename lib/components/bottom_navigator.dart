@@ -1,7 +1,10 @@
 import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/entity/cart_product.dart';
+import 'package:ecommerce_store/screen/login/login_screen.dart';
+import 'package:ecommerce_store/services/authservice/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BottomNavigator extends StatefulWidget {
   final Function callbackFunction;
@@ -75,10 +78,19 @@ class _BottomNavigatorState extends State<BottomNavigator> {
     );
   }
 
-  void _onItemTapped(int index) {
+  _onItemTapped(int index) async {
+    final userPrefs = await AuthProvider.fromapi().getSharedPref(key: 'user');
     setState(() {
       _selectedIndex = index;
     });
+    if (userPrefs == null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        ),
+      );
+    }
     widget.callbackFunction(_selectedIndex);
   }
 }

@@ -2,6 +2,7 @@ import 'package:ecommerce_store/screen/splash/splash_screeen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

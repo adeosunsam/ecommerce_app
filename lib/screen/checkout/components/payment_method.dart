@@ -1,3 +1,4 @@
+import 'package:ecommerce_store/constants.dart';
 import 'package:flutter/material.dart';
 
 class PaymentMethod extends StatelessWidget {
@@ -28,25 +29,76 @@ class PaymentMethod extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                // ShippingInfoDetail(
-                //     imagePath: 'assets/icons/user.svg', text: 'Rosina Doe'),
-                // ShippingInfoDetail(
-                //   imagePath: 'assets/icons/location.svg',
-                //   text: "43 Oxford Road M13 4GR Manchester, UK",
-                // ),
-                // ShippingInfoDetail(
-                //     imagePath: 'assets/icons/call.svg',
-                //     text: '+234 8165434179'),
-              ],
-            ),
-          ),
+          child: const PaymentProvider(),
         ),
       ],
+    );
+  }
+}
+
+class PaymentProvider extends StatefulWidget {
+  const PaymentProvider({Key? key}) : super(key: key);
+
+  @override
+  State<PaymentProvider> createState() => _PaymentProviderState();
+}
+
+List<String> paymentGateway = ['paystack', 'paypal'];
+int _selectedIndex = 0;
+
+class _PaymentProviderState extends State<PaymentProvider> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: paymentGateway
+            .map(
+              (e) => _getPaymentGateway(e, paymentGateway.indexOf(e)),
+            )
+            .toList(),
+      ),
+    );
+  }
+
+  Widget _getPaymentGateway(String gateway, int index) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(2),
+              height: 18,
+              width: 18,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color:
+                      (_selectedIndex == index) ? kPrimary : Colors.transparent,
+                ),
+              ),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: (_selectedIndex == index)
+                      ? kPrimary
+                      : const Color(0xFFC4C4C4),
+                ),
+              ),
+            ),
+            const SizedBox(width: 20),
+            Image.asset(
+              'assets/images/$gateway.png',
+              scale: 8,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
