@@ -1,9 +1,12 @@
 import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/entity/fav_product.dart';
+import 'package:ecommerce_store/entity/products.dart';
 import 'package:ecommerce_store/screen/favorite/components/empty_wishlist.dart';
 import 'package:ecommerce_store/screen/favorite/components/fav_products.dart';
+import 'package:ecommerce_store/utility/sharedconstant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoriteScreen extends StatefulWidget {
   final AnimationController controller;
@@ -89,14 +92,14 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       ],
                     ),
                   ),
-                  favProducts.isNotEmpty
-                      // ignore: prefer_const_constructors
-                      ? FavProducts(oncallbackFunction: callback)
-                      : EmptyScreen(
-                          errorImage: Image.asset('assets/images/fav.png'),
-                          press: () {},
-                          title: 'No favourites yet',
-                        ),
+                  //checkpref().
+                  // ignore: prefer_const_constructors
+                  FavProducts(oncallbackFunction: callback)
+                  // : EmptyScreen(
+                  //     errorImage: Image.asset('assets/images/fav.png'),
+                  //     press: () {},
+                  //     title: 'No favourites yet',
+                  //   ),
                 ],
               ),
             ),

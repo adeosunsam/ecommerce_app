@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:ecommerce_store/constants.dart';
-import 'package:ecommerce_store/entity/fav_product.dart';
 import 'package:ecommerce_store/entity/products.dart';
+import 'package:ecommerce_store/services/authservice/auth_provider.dart';
+import 'package:ecommerce_store/utility/sharedconstant.dart';
 import 'package:flutter/material.dart';
 
 class FavProducts extends StatefulWidget {
@@ -15,10 +18,30 @@ class FavProducts extends StatefulWidget {
 }
 
 class _FavProductsState extends State<FavProducts> {
+  List<Product> newList = [];
+  onload() async {
+    final readOldList =
+        await AuthProvider.fromapi().getSharedPref(key: SharedConstants.fav);
+
+    if (readOldList != null) {
+      final productList = productFromJson(readOldList);
+      newList = productList;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      await onload();
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: favProducts.map((e) {
+      children: newList.map((e) {
         return favproductbuider(context, e);
       }).toList(),
     );
@@ -100,9 +123,9 @@ class _FavProductsState extends State<FavProducts> {
               top: 5,
               child: GestureDetector(
                 onTap: () {
-                  setState(() {
-                    favProducts.remove(favproduct);
-                  });
+                  newList.removeWhere((element) => element.id == favproduct.id);
+                  AuthProvider.fromapi().setSharedPref(
+                      key: SharedConstants.fav, value: jsonEncode(newList));
                   widget.oncallbackFunction();
                 },
                 child: const Icon(

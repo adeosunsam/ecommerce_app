@@ -2,11 +2,11 @@ import 'package:ecommerce_store/components/password_input_field.dart';
 import 'package:ecommerce_store/components/rounded_button.dart';
 import 'package:ecommerce_store/components/text_input_field.dart';
 import 'package:ecommerce_store/constants.dart';
+import 'package:ecommerce_store/screen/home/home_page.dart';
 import 'package:ecommerce_store/services/authservice/auth_provider.dart';
 import 'package:ecommerce_store/utility/sharedconstant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginField extends StatefulWidget {
   const LoginField({
@@ -58,7 +58,7 @@ class _LoginFieldState extends State<LoginField> {
                 )
               ],
             ),
-            const InputTextField(hintText: 'sadeosun@gmail.com'),
+            const InputTextField(hintText: 'example@gmail.com'),
             SizedBox(height: size.height * 0.04),
             Row(
               children: [
@@ -81,7 +81,7 @@ class _LoginFieldState extends State<LoginField> {
                 )
               ],
             ),
-            const PasswordInputField(hintText: 'Password'),
+            const PasswordInputField(hintText: 'password'),
             SizedBox(height: size.height * 0.03),
             GestureDetector(
               onTap: () {},
@@ -103,6 +103,11 @@ class _LoginFieldState extends State<LoginField> {
                     value: 'value',
                   );
                   Navigator.of(context).pop();
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => const ProductPage(),
+                  //     ));
                 },
                 buttonColor: kPrimary,
                 textColor: Colors.white,

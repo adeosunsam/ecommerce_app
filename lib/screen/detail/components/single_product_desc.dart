@@ -5,6 +5,7 @@ import 'package:ecommerce_store/entity/products.dart';
 import 'package:ecommerce_store/screen/detail/components/description_collapse.dart';
 import 'package:ecommerce_store/screen/detail/components/product_color.dart';
 import 'package:ecommerce_store/screen/home/home_page.dart';
+
 import 'package:ecommerce_store/utility/add_to_cart.dart';
 import 'package:ecommerce_store/utility/item_already_present.dart';
 import 'package:flutter/material.dart';
@@ -98,7 +99,6 @@ class _SingleProductDescriptionState extends State<SingleProductDescription> {
                 } else {
                   await showPresentInCartDialog(context);
                 }
-
                 Navigator.push(
                   context,
                   MaterialPageRoute(

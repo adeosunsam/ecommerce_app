@@ -1,3 +1,11 @@
+import 'dart:convert';
+
+//List<Product> productFromJson(String str) => Product.fromJson(json.decode(str));
+
+List<Product> productFromJson(String str) => (json.decode(str) as List<dynamic>)
+    .map<Product>((product) => Product.fromJson(product))
+    .toList();
+
 class Product {
   final String image, title, description, name, category;
   int price, quantity, total;
@@ -14,6 +22,30 @@ class Product {
     required this.id,
     required this.name,
   });
+
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
+        image: json['image'],
+        title: json['title'],
+        quantity: json['quantity'],
+        description: json['description'],
+        category: json['category'],
+        total: json['total'],
+        price: json['price'],
+        id: json['id'],
+        name: json['name'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        'image': image,
+        'title': title,
+        'quantity': quantity,
+        'description': description,
+        'category': category,
+        'total': total,
+        'price': price,
+        'id': id,
+        'name': name,
+      };
 }
 
 enum ProductCategory {
@@ -55,9 +87,9 @@ List<Product> products = [
     title: '2020 Apple iPad Air 10.9"',
     name: 'Apple iPad',
     category: productValues(ProductCategory.ipads),
-    quantity: 1,
+    quantity: 0,
     price: 579,
-    total: 579,
+    total: 0,
     description:
         "Available when you purchase any new iPhone, iPad, iPod Touch, Mac or Apple TV, £4.99/month after free trial.",
     image: "assets/images/tablet.png",
@@ -67,9 +99,9 @@ List<Product> products = [
     name: "Apple Watch",
     category: productValues(ProductCategory.watches),
     title: '',
-    quantity: 1,
+    quantity: 0,
     price: 359,
-    total: 359,
+    total: 0,
     description: dummyText,
     image: "assets/images/watch1.png",
   ),
@@ -78,9 +110,9 @@ List<Product> products = [
     name: "Apple MacBook",
     category: productValues(ProductCategory.laptops),
     title: '',
-    quantity: 1,
+    quantity: 0,
     price: 234,
-    total: 234,
+    total: 0,
     description: dummyText,
     image: "assets/images/macbook.png",
   ),
@@ -89,9 +121,9 @@ List<Product> products = [
     name: "Apple iPhone",
     category: productValues(ProductCategory.phones),
     title: '',
-    quantity: 1,
+    quantity: 0,
     price: 234,
-    total: 234,
+    total: 0,
     description: dummyText,
     image: "assets/images/iphone.png",
   ),
@@ -100,9 +132,9 @@ List<Product> products = [
     title: "APPLE AirPods Pro - White",
     name: 'APPLE AirPods',
     category: productValues(ProductCategory.gadgets),
-    quantity: 1,
+    quantity: 0,
     price: 234,
-    total: 234,
+    total: 0,
     description: dummyText,
     image: "assets/images/airpod.png",
   ),
@@ -111,9 +143,9 @@ List<Product> products = [
     title: "",
     name: 'APPLE iMac',
     category: productValues(ProductCategory.gadgets),
-    quantity: 1,
+    quantity: 0,
     price: 234,
-    total: 234,
+    total: 0,
     description: dummyText,
     image: "assets/images/imac.png",
   ),

@@ -2,6 +2,8 @@ import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/screen/cart/components/cart_total.dart';
 import 'package:ecommerce_store/screen/checkout/components/payment_method.dart';
 import 'package:ecommerce_store/screen/checkout/components/shipping_info.dart';
+import 'package:ecommerce_store/screen/paynow/pay_now.dart';
+import 'package:ecommerce_store/utility/pay_now_dialog.dart';
 import 'package:flutter/material.dart';
 
 class CheckOutScreen extends StatefulWidget {
@@ -46,7 +48,16 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
             ),
           ),
           CartTotalPrice(
-            press: () {},
+            press: () async {
+              await showPayNowDialog(context);
+              // Navigator.of(context).push(PageRouteBuilder(
+              //     //barrierDismissible: true,
+              //     opaque: false,
+              //     //barrierColor: Colors.black54,
+              //     pageBuilder: (context, _, __) {
+              //       return showPayNowDialog(context);
+              //     }));
+            },
             text: 'Confirm and pay',
           ),
         ],
