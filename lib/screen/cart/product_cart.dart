@@ -1,5 +1,4 @@
 import 'package:ecommerce_store/constants.dart';
-import 'package:ecommerce_store/entity/cart_product.dart';
 import 'package:ecommerce_store/entity/products.dart';
 import 'package:ecommerce_store/screen/cart/components/cart_body.dart';
 import 'package:ecommerce_store/screen/cart/components/cart_total.dart';

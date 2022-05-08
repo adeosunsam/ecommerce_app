@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/entity/products.dart';
 import 'package:ecommerce_store/screen/cart/components/set_quantity.dart';
+import 'package:ecommerce_store/services/authservice/auth_provider.dart';
+import 'package:ecommerce_store/utility/sharedconstant.dart';
 import 'package:flutter/material.dart';
 
 class CartBody extends StatefulWidget {
@@ -17,18 +21,30 @@ class CartBody extends StatefulWidget {
 }
 
 class _CartBodyState extends State<CartBody> {
-  callback(int value) {
-    setState(() {
-      if (value == -1 && widget.cartproduct.quantity == 1) {
-        widget.cartproduct.quantity = widget.cartproduct.quantity;
-      } else if (value == -1) {
-        widget.cartproduct.quantity += value;
-        //widget.cartproduct.quantity * widget.cartproduct.price -= widget.cartproduct.price;
-      } else if (value == 1) {
-        widget.cartproduct.quantity += value;
-        //widget.cartproduct.total += widget.cartproduct.price;
-      }
-    });
+  callback(int value) async {
+    final cartList =
+        await AuthProvider.fromapi().getSharedPref(key: SharedConstants.cart);
+    if (cartList != null) {
+      final productList = productFromJson(cartList);
+      Product product = productList
+          .firstWhere((element) => element.id == widget.cartproduct.id);
+      productList.removeWhere((element) => element.id == product.id);
+
+      setState(() {
+        if (value == -1 && widget.cartproduct.quantity == 1) {
+          widget.cartproduct.quantity = widget.cartproduct.quantity;
+        } else if (value == -1) {
+          widget.cartproduct.quantity += value;
+          product.quantity += value;
+        } else if (value == 1) {
+          widget.cartproduct.quantity += value;
+          product.quantity += value;
+        }
+        productList.add(product);
+        AuthProvider.fromapi().setSharedPref(
+            key: SharedConstants.cart, value: jsonEncode(productList));
+      });
+    }
   }
 
   @override
