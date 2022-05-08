@@ -23,10 +23,10 @@ class _CartBodyState extends State<CartBody> {
         widget.cartproduct.quantity = widget.cartproduct.quantity;
       } else if (value == -1) {
         widget.cartproduct.quantity += value;
-        widget.cartproduct.total -= widget.cartproduct.price;
+        //widget.cartproduct.quantity * widget.cartproduct.price -= widget.cartproduct.price;
       } else if (value == 1) {
         widget.cartproduct.quantity += value;
-        widget.cartproduct.total += widget.cartproduct.price;
+        //widget.cartproduct.total += widget.cartproduct.price;
       }
     });
   }
@@ -73,7 +73,7 @@ class _CartBodyState extends State<CartBody> {
                     ),
                     SizedBox(height: size.height * .018),
                     Text(
-                      '\$${widget.cartproduct.total}',
+                      '\$${widget.cartproduct.quantity * widget.cartproduct.price}',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

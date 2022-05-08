@@ -1,12 +1,11 @@
 import 'package:ecommerce_store/constants.dart';
-import 'package:ecommerce_store/entity/fav_product.dart';
 import 'package:ecommerce_store/entity/products.dart';
 import 'package:ecommerce_store/screen/favorite/components/empty_wishlist.dart';
 import 'package:ecommerce_store/screen/favorite/components/fav_products.dart';
+import 'package:ecommerce_store/services/authservice/auth_provider.dart';
 import 'package:ecommerce_store/utility/sharedconstant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoriteScreen extends StatefulWidget {
   final AnimationController controller;
@@ -26,86 +25,115 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreenState extends State<FavoriteScreen> {
   bool isCollapsed = true;
   final Duration duration = const Duration(milliseconds: 300);
+  List<Product> newList = [];
+  callback(List<Product> getList) {
+    setState(() {
+      newList = getList;
+    });
+  }
 
-  callback() {
-    setState(() {});
+  ongetFav() async {
+    final favouriteList =
+        await AuthProvider.fromapi().getSharedPref(key: SharedConstants.fav);
+    if (favouriteList != null) {
+      final productList = productFromJson(favouriteList);
+      newList = productList;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return AnimatedPositioned(
-      top: 0,
-      bottom: 0,
-      left: isCollapsed ? 0 : 0.43 * size.width,
-      right: isCollapsed ? 0 : -.4 * size.width,
-      duration: duration,
-      child: ScaleTransition(
-        scale: widget.scaleAnimation,
-        child: Material(
-          borderRadius: BorderRadius.circular(!isCollapsed ? 20 : 0),
-          elevation: isCollapsed ? 0 : 5,
-          color: kbackground,
-          child: SingleChildScrollView(
-            child: SafeArea(
-              child: Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              if (isCollapsed) {
-                                widget.controller.forward();
-                              } else {
-                                widget.controller.reverse();
-                              }
-                              isCollapsed = !isCollapsed;
-                            });
-                            widget.oncallbackFuntion(isCollapsed);
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: size.width * .05),
-                            width: 20,
-                            height: 20,
-                            child: SvgPicture.asset(
-                              'assets/icons/menu.svg',
+    return FutureBuilder(
+        future: ongetFav(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.active:
+            case ConnectionState.done:
+              return AnimatedPositioned(
+                top: 0,
+                bottom: 0,
+                left: isCollapsed ? 0 : 0.43 * size.width,
+                right: isCollapsed ? 0 : -.4 * size.width,
+                duration: duration,
+                child: ScaleTransition(
+                  scale: widget.scaleAnimation,
+                  child: Material(
+                    borderRadius: BorderRadius.circular(!isCollapsed ? 20 : 0),
+                    elevation: isCollapsed ? 0 : 5,
+                    color: kbackground,
+                    child: SingleChildScrollView(
+                      child: SafeArea(
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 20),
+                              child: Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        if (isCollapsed) {
+                                          widget.controller.forward();
+                                        } else {
+                                          widget.controller.reverse();
+                                        }
+                                        isCollapsed = !isCollapsed;
+                                      });
+                                      widget.oncallbackFuntion(isCollapsed);
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: size.width * .05),
+                                      width: 20,
+                                      height: 20,
+                                      child: SvgPicture.asset(
+                                        'assets/icons/menu.svg',
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: size.width * .2),
+                                    child: const Text(
+                                      'Favourites',
+                                      style: TextStyle(
+                                        fontFamily: 'Raleway',
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+                            newList.isNotEmpty
+                                // ignore: prefer_const_constructors
+                                ? FavProducts(oncallbackFunction: callback)
+                                : EmptyScreen(
+                                    errorImage:
+                                        Image.asset('assets/images/fav.png'),
+                                    press: () {},
+                                    title: 'No favourites yet',
+                                  ),
+                          ],
                         ),
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(horizontal: size.width * .2),
-                          child: const Text(
-                            'Favourites',
-                            style: TextStyle(
-                              fontFamily: 'Raleway',
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                  //checkpref().
-                  // ignore: prefer_const_constructors
-                  FavProducts(oncallbackFunction: callback)
-                  // : EmptyScreen(
-                  //     errorImage: Image.asset('assets/images/fav.png'),
-                  //     press: () {},
-                  //     title: 'No favourites yet',
-                  //   ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
+                ),
+              );
+            default:
+              return Container(
+                color: kbackground, //i need to set the back color to kprimary
+                height: size.height,
+                width: double.infinity,
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+          }
+        });
   }
 }

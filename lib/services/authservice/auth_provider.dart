@@ -31,4 +31,7 @@ class AuthProvider implements IAuthService {
     required String password,
   }) =>
       service.logIn(email: email, password: password);
+
+  @override
+  Future removePref({required String key}) => service.removePref(key: key);
 }

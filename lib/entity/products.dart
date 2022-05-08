@@ -8,7 +8,7 @@ List<Product> productFromJson(String str) => (json.decode(str) as List<dynamic>)
 
 class Product {
   final String image, title, description, name, category;
-  int price, quantity, total;
+  int price, quantity;
   final int id;
 
   Product({
@@ -17,7 +17,6 @@ class Product {
     required this.quantity,
     required this.description,
     required this.category,
-    required this.total,
     required this.price,
     required this.id,
     required this.name,
@@ -29,7 +28,6 @@ class Product {
         quantity: json['quantity'],
         description: json['description'],
         category: json['category'],
-        total: json['total'],
         price: json['price'],
         id: json['id'],
         name: json['name'],
@@ -41,7 +39,6 @@ class Product {
         'quantity': quantity,
         'description': description,
         'category': category,
-        'total': total,
         'price': price,
         'id': id,
         'name': name,
@@ -87,9 +84,8 @@ List<Product> products = [
     title: '2020 Apple iPad Air 10.9"',
     name: 'Apple iPad',
     category: productValues(ProductCategory.ipads),
-    quantity: 0,
+    quantity: 1,
     price: 579,
-    total: 0,
     description:
         "Available when you purchase any new iPhone, iPad, iPod Touch, Mac or Apple TV, £4.99/month after free trial.",
     image: "assets/images/tablet.png",
@@ -99,9 +95,8 @@ List<Product> products = [
     name: "Apple Watch",
     category: productValues(ProductCategory.watches),
     title: '',
-    quantity: 0,
+    quantity: 1,
     price: 359,
-    total: 0,
     description: dummyText,
     image: "assets/images/watch1.png",
   ),
@@ -110,9 +105,8 @@ List<Product> products = [
     name: "Apple MacBook",
     category: productValues(ProductCategory.laptops),
     title: '',
-    quantity: 0,
+    quantity: 1,
     price: 234,
-    total: 0,
     description: dummyText,
     image: "assets/images/macbook.png",
   ),
@@ -121,9 +115,8 @@ List<Product> products = [
     name: "Apple iPhone",
     category: productValues(ProductCategory.phones),
     title: '',
-    quantity: 0,
+    quantity: 1,
     price: 234,
-    total: 0,
     description: dummyText,
     image: "assets/images/iphone.png",
   ),
@@ -132,9 +125,8 @@ List<Product> products = [
     title: "APPLE AirPods Pro - White",
     name: 'APPLE AirPods',
     category: productValues(ProductCategory.gadgets),
-    quantity: 0,
+    quantity: 1,
     price: 234,
-    total: 0,
     description: dummyText,
     image: "assets/images/airpod.png",
   ),
@@ -143,9 +135,8 @@ List<Product> products = [
     title: "",
     name: 'APPLE iMac',
     category: productValues(ProductCategory.gadgets),
-    quantity: 0,
+    quantity: 1,
     price: 234,
-    total: 0,
     description: dummyText,
     image: "assets/images/imac.png",
   ),

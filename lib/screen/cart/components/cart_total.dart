@@ -34,7 +34,7 @@ class CartTotalPrice extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '\$${cartProducts.fold<double>(0, (a, b) => a + b.total)}',
+                  '\$${cartProducts.fold<double>(0, (a, b) => a + (b.quantity * b.price))}',
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

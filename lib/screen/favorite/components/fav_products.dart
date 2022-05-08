@@ -126,7 +126,7 @@ class _FavProductsState extends State<FavProducts> {
                   newList.removeWhere((element) => element.id == favproduct.id);
                   AuthProvider.fromapi().setSharedPref(
                       key: SharedConstants.fav, value: jsonEncode(newList));
-                  widget.oncallbackFunction();
+                  widget.oncallbackFunction(newList);
                 },
                 child: const Icon(
                   Icons.clear,

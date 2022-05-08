@@ -101,4 +101,10 @@ class AuthServices implements IAuthService {
       prefs.setString(SharedConstants.user, response);
     }
   }
+
+  @override
+  Future removePref({required String key}) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove(key);
+  }
 }

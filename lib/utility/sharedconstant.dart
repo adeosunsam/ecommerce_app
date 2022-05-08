@@ -3,4 +3,5 @@ class SharedConstants {
   static const token = 'token';
   static const id = "id";
   static const fav = "fav";
+  static const cart = "cart";
 }
