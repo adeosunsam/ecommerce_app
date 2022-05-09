@@ -1,6 +1,5 @@
 import 'package:ecommerce_store/components/rounded_button.dart';
 import 'package:ecommerce_store/constants.dart';
-import 'package:ecommerce_store/entity/cart_product.dart';
 import 'package:ecommerce_store/entity/products.dart';
 import 'package:ecommerce_store/services/authservice/auth_provider.dart';
 import 'package:ecommerce_store/utility/sharedconstant.dart';

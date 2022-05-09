@@ -140,7 +140,10 @@ class _CartScreenBodyState extends State<CartScreenBody> {
           press: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const CheckOutScreen(),
+              builder: (context) => CheckOutScreen(
+                totalQuantity:
+                    widget.newList.fold<int>(0, (a, b) => a + b.quantity),
+              ),
             ),
           ),
           text: 'Checkout',

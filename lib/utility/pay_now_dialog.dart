@@ -2,7 +2,7 @@ import 'package:ecommerce_store/entity/products.dart';
 import 'package:ecommerce_store/screen/cart/components/cart_total.dart';
 import 'package:flutter/material.dart';
 
-Future showPayNowDialog(BuildContext context) {
+Future showPayNowDialog(BuildContext context, int totalQuantity) {
   Size size = MediaQuery.of(context).size;
   return showDialog(
       context: context,
@@ -41,13 +41,26 @@ Future showPayNowDialog(BuildContext context) {
                                   color: Colors.black,
                                 ),
                               ),
-                              Text(
-                                'products: ${products.fold<int>(0, (a, b) => a + b.quantity)}',
-                                style: const TextStyle(
-                                  fontFamily: 'Raleway',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
+                              Row(
+                                children: [
+                                  const Text(
+                                    'products: ',
+                                    style: TextStyle(
+                                      fontFamily: 'Raleway',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text(
+                                    '$totalQuantity',
+                                    style: const TextStyle(
+                                      fontFamily: 'Raleway',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
