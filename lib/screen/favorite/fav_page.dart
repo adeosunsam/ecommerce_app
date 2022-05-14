@@ -25,19 +25,18 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreenState extends State<FavoriteScreen> {
   bool isCollapsed = true;
   final Duration duration = const Duration(milliseconds: 300);
-  List<Product> newList = [];
-  callback(List<Product> getList) {
-    setState(() {
-      newList = getList;
-    });
+
+  callback() {
+    setState(() {});
   }
 
+  bool hasData = false;
   ongetFav() async {
     final favouriteList =
         await AuthProvider.fromapi().getSharedPref(key: SharedConstants.fav);
     if (favouriteList != null) {
       final productList = productFromJson(favouriteList);
-      newList = productList;
+      hasData = productList.isNotEmpty ? true : false;
     }
   }
 
@@ -62,63 +61,64 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     borderRadius: BorderRadius.circular(!isCollapsed ? 20 : 0),
                     elevation: isCollapsed ? 0 : 5,
                     color: kbackground,
-                    child: SingleChildScrollView(
-                      child: SafeArea(
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 20),
-                              child: Row(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        if (isCollapsed) {
-                                          widget.controller.forward();
-                                        } else {
-                                          widget.controller.reverse();
-                                        }
-                                        isCollapsed = !isCollapsed;
-                                      });
-                                      widget.oncallbackFuntion(isCollapsed);
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: size.width * .05),
-                                      width: 20,
-                                      height: 20,
-                                      child: SvgPicture.asset(
-                                        'assets/icons/menu.svg',
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
+                    child: SafeArea(
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: size.height * .03),
+                            child: Row(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      if (isCollapsed) {
+                                        widget.controller.forward();
+                                      } else {
+                                        widget.controller.reverse();
+                                      }
+                                      isCollapsed = !isCollapsed;
+                                    });
+                                    widget.oncallbackFuntion(isCollapsed);
+                                  },
+                                  child: Container(
                                     margin: EdgeInsets.symmetric(
-                                        horizontal: size.width * .2),
-                                    child: const Text(
-                                      'Favourites',
-                                      style: TextStyle(
-                                        fontFamily: 'Raleway',
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
+                                        horizontal: size.width * .05),
+                                    width: 20,
+                                    height: 20,
+                                    child: SvgPicture.asset(
+                                      'assets/icons/menu.svg',
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: size.width * .2),
+                                  child: const Text(
+                                    'Favourites',
+                                    style: TextStyle(
+                                      fontFamily: 'Raleway',
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            newList.isNotEmpty
-                                // ignore: prefer_const_constructors
-                                ? FavProducts(oncallbackFunction: callback)
+                          ),
+                          SizedBox(
+                            height: size.height * .78,
+                            child: hasData
+                                ? FavProducts(onCallBackFunction: callback)
                                 : EmptyScreen(
                                     errorImage:
                                         Image.asset('assets/images/fav.png'),
                                     press: () {},
                                     title: 'No favourites yet',
                                   ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

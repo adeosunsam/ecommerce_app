@@ -2,7 +2,6 @@ import 'dart:convert' show jsonEncode;
 
 import 'package:ecommerce_store/components/rounded_button.dart';
 import 'package:ecommerce_store/constants.dart';
-import 'package:ecommerce_store/entity/cart_product.dart';
 import 'package:ecommerce_store/entity/products.dart';
 import 'package:ecommerce_store/screen/detail/components/description_collapse.dart';
 import 'package:ecommerce_store/screen/detail/components/product_color.dart';
@@ -119,7 +118,7 @@ class _SingleProductDescriptionState extends State<SingleProductDescription> {
           RoundedButton(
               press: () {
                 onAddToCart();
-                Navigator.of(context).pop();
+                //Navigator.of(context).pop();
               },
               buttonColor: kPrimary,
               textColor: Colors.white,

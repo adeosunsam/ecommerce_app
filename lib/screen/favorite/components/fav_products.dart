@@ -7,10 +7,10 @@ import 'package:ecommerce_store/utility/sharedconstant.dart';
 import 'package:flutter/material.dart';
 
 class FavProducts extends StatefulWidget {
-  final Function oncallbackFunction;
+  final Function onCallBackFunction;
   const FavProducts({
     Key? key,
-    required this.oncallbackFunction,
+    required this.onCallBackFunction,
   }) : super(key: key);
 
   @override
@@ -30,25 +30,23 @@ class _FavProductsState extends State<FavProducts> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
-      await onload();
-      setState(() {});
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: newList.map((e) {
-        return favproductbuider(context, e);
-      }).toList(),
-    );
+    return FutureBuilder(
+        future: onload(),
+        builder: (context, snapshot) {
+          return SingleChildScrollView(
+            child: Column(
+              children: newList.map((e) {
+                return favproductbuider(context, e);
+              }).toList(),
+            ),
+          );
+        });
   }
 
   Widget favproductbuider(BuildContext context, Product favproduct) {
     Size size = MediaQuery.of(context).size;
+
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: size.width * .1,
@@ -124,9 +122,14 @@ class _FavProductsState extends State<FavProducts> {
               child: GestureDetector(
                 onTap: () {
                   newList.removeWhere((element) => element.id == favproduct.id);
+
                   AuthProvider.fromapi().setSharedPref(
                       key: SharedConstants.fav, value: jsonEncode(newList));
-                  widget.oncallbackFunction(newList);
+                  if (newList.isEmpty) {
+                    widget.onCallBackFunction();
+                  } else {
+                    setState(() {});
+                  }
                 },
                 child: const Icon(
                   Icons.clear,
