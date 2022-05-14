@@ -58,7 +58,9 @@ class _LoginFieldState extends State<LoginField> {
                 )
               ],
             ),
-            const InputTextField(hintText: 'example@gmail.com'),
+            const InputTextField(
+              hintText: 'example@gmail.com',
+            ),
             SizedBox(height: size.height * 0.04),
             Row(
               children: [

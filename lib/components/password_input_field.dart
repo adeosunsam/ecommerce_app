@@ -1,4 +1,3 @@
-import 'package:ecommerce_store/constants.dart';
 import 'package:flutter/material.dart';
 
 class PasswordInputField extends StatefulWidget {
@@ -15,6 +14,7 @@ class PasswordInputField extends StatefulWidget {
 
 class _PasswordInputFieldState extends State<PasswordInputField> {
   late final TextEditingController _text;
+  bool click = true;
 
   @override
   void initState() {
@@ -33,24 +33,25 @@ class _PasswordInputFieldState extends State<PasswordInputField> {
     return TextField(
       enableSuggestions: false,
       autocorrect: false,
-      autofocus: true,
-      obscureText: true,
+      obscureText: click,
+      style: const TextStyle(
+        color: Colors.black,
+        fontSize: 18,
+      ),
       decoration: InputDecoration(
         hintText: widget.hintText,
-        suffixStyle: const TextStyle(
-          color: kPrimary,
-          fontWeight: FontWeight.w600,
-          fontSize: 20,
-          fontFamily: 'Raleway',
+        suffixIcon: IconButton(
+          onPressed: () {
+            setState(() {
+              click = !click;
+            });
+          },
+          icon: Icon(
+            click ? Icons.visibility : Icons.visibility_off,
+            color: Colors.grey,
+          ),
         ),
-        suffixText: 'Show',
       ),
-      style: const TextStyle(
-        fontSize: 20,
-        fontFamily: 'Raleway',
-        fontWeight: FontWeight.w600,
-      ),
-      keyboardType: TextInputType.emailAddress,
     );
   }
 }

@@ -100,6 +100,18 @@ class _BottomNavigatorState extends State<BottomNavigator> {
     setState(() {
       _selectedIndex = index;
     });
-    widget.callbackFunction(_selectedIndex);
+    final getUser =
+        await AuthProvider.fromapi().getSharedPref(key: SharedConstants.user);
+    bool isUserPresent = getUser != null ? true : false;
+    if (!isUserPresent && _selectedIndex == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        ),
+      );
+    } else {
+      widget.callbackFunction(_selectedIndex);
+    }
   }
 }

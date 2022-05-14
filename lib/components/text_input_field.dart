@@ -36,6 +36,7 @@ class _InputTextFieldState extends State<InputTextField> {
         hintText: widget.hintText,
       ),
       style: const TextStyle(
+        color: Colors.black,
         fontSize: 20,
         fontFamily: 'Raleway',
         fontWeight: FontWeight.w600,
