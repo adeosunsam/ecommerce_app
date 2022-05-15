@@ -1,14 +1,17 @@
 import 'package:ecommerce_store/constants.dart';
+import 'package:ecommerce_store/entity/userdata.dart';
 import 'package:ecommerce_store/screen/profile/components/edit_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class UserProfileScreen extends StatefulWidget {
+  final Data currentUser;
   final AnimationController controller;
   final Animation<double> scaleAnimation;
   final Function oncallbackFuntion;
   const UserProfileScreen({
     Key? key,
+    required this.currentUser,
     required this.controller,
     required this.scaleAnimation,
     required this.oncallbackFuntion,
@@ -37,57 +40,61 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           borderRadius: BorderRadius.circular(!isCollapsed ? 20 : 0),
           elevation: isCollapsed ? 0 : 5,
           color: kbackground,
-          child: SingleChildScrollView(
-            child: SafeArea(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20),
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              if (isCollapsed) {
-                                widget.controller.forward();
-                              } else {
-                                widget.controller.reverse();
-                              }
-                              isCollapsed = !isCollapsed;
-                            });
-                            widget.oncallbackFuntion(isCollapsed);
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: size.width * .05),
-                            width: 22,
-                            height: 22,
-                            child: SvgPicture.asset(
-                              'assets/icons/menu.svg',
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(horizontal: size.width * .2),
-                          child: const Text(
-                            'My profile',
-                            style: TextStyle(
-                              fontFamily: 'Raleway',
-                              fontSize: 26,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(
+                    top: 20,
+                    bottom: 10,
                   ),
-                  const UserProfile(),
-                  const UserPageOptions(),
-                ],
-              ),
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            if (isCollapsed) {
+                              widget.controller.forward();
+                            } else {
+                              widget.controller.reverse();
+                            }
+                            isCollapsed = !isCollapsed;
+                          });
+                          widget.oncallbackFuntion(isCollapsed);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: size.width * .05),
+                          width: 22,
+                          height: 22,
+                          child: SvgPicture.asset(
+                            'assets/icons/menu.svg',
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: size.width * .2),
+                        child: const Text(
+                          'My profile',
+                          style: TextStyle(
+                            fontFamily: 'Raleway',
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                UserProfile(userdata: widget.currentUser),
+                SizedBox(
+                  height: size.height * .535,
+                  child: const UserPageOptions(),
+                ),
+              ],
             ),
           ),
         ),
@@ -97,8 +104,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 }
 
 class UserProfile extends StatelessWidget {
+  final Data userdata;
   const UserProfile({
     Key? key,
+    required this.userdata,
   }) : super(key: key);
 
   @override
@@ -108,9 +117,10 @@ class UserProfile extends StatelessWidget {
       width: double.infinity,
       margin: EdgeInsets.symmetric(
         horizontal: size.width * 0.1,
-        vertical: size.height * 0.02,
+        vertical: size.height * 0.01,
       ),
       child: Stack(
+        alignment: AlignmentDirectional.topCenter,
         children: [
           Container(
             height: size.height * 0.18,
@@ -127,8 +137,11 @@ class UserProfile extends StatelessWidget {
             child: FittedBox(
               child: CircleAvatar(
                 child: ClipOval(
-                  child: Image.asset(
-                    'assets/images/user.jpeg',
+                  child: Image(
+                    image: NetworkImage(
+                      userdata.avatar ??
+                          'https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg',
+                    ),
                     height: 90,
                     width: 50,
                     fit: BoxFit.cover,
@@ -139,15 +152,16 @@ class UserProfile extends StatelessWidget {
           ),
           Positioned(
             top: size.height * 0.12,
-            left: size.width * 0.31,
-            child: const Text(
-              'John Doe',
-              style: TextStyle(
+            //left: size.width * 0.31,
+            child: Text(
+              '${userdata.firstName} ${userdata.lastName}',
+              style: const TextStyle(
                 fontFamily: 'Raleway',
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
                 color: Colors.black,
               ),
+              textAlign: TextAlign.center,
             ),
           ),
           Positioned(
@@ -164,9 +178,9 @@ class UserProfile extends StatelessWidget {
             left: size.width * .05,
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: size.width * 0.1),
-              child: const Text(
-                "Address: 43 Oxford Road M13 4GR Manchester, UK",
-                style: TextStyle(
+              child: Text(
+                'Address: ${userdata.address}',
+                style: const TextStyle(
                   fontFamily: 'Raleway',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -209,11 +223,13 @@ List pages = [
 class _UserPageOptionsState extends State<UserPageOptions> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: options.map((e) {
-        int index = options.indexOf(e);
-        return expandOption(e, index);
-      }).toList(),
+    return SingleChildScrollView(
+      child: Column(
+        children: options.map((e) {
+          int index = options.indexOf(e);
+          return expandOption(e, index);
+        }).toList(),
+      ),
     );
   }
 

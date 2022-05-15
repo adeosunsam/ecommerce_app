@@ -1,5 +1,6 @@
 import 'package:ecommerce_store/components/bottom_navigator.dart';
 import 'package:ecommerce_store/constants.dart';
+import 'package:ecommerce_store/entity/userdata.dart';
 import 'package:ecommerce_store/screen/cart/product_cart.dart';
 import 'package:ecommerce_store/screen/favorite/fav_page.dart';
 import 'package:ecommerce_store/screen/home/components/product.dart';
@@ -41,9 +42,21 @@ class _ProductPageState extends State<ProductPage>
   }
 
   int currentIndex = 0;
-  callback(index) {
+  Data _currentUser = Data(
+    address: '',
+    avatar: null,
+    email: '',
+    firstName: '',
+    id: '',
+    lastName: '',
+    phoneNumber: '',
+  );
+  callback(int index, Data? currentUser) {
     setState(() {
       currentIndex = index;
+      if (currentUser != null) {
+        _currentUser = currentUser;
+      }
     });
   }
 
@@ -70,6 +83,7 @@ class _ProductPageState extends State<ProductPage>
           scaleAnimation: _scaleAnimation,
           oncallbackFuntion: oncallback),
       UserProfileScreen(
+          currentUser: _currentUser,
           controller: _controller,
           scaleAnimation: _scaleAnimation,
           oncallbackFuntion: oncallback),

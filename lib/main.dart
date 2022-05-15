@@ -1,5 +1,11 @@
+import 'package:ecommerce_store/screen/home/home_page.dart';
 import 'package:ecommerce_store/screen/splash/splash_screeen.dart';
+import 'package:ecommerce_store/services/authservice/auth_service.dart';
+import 'package:ecommerce_store/services/bloc/auth_bloc.dart';
+import 'package:ecommerce_store/services/bloc/auth_event.dart';
+import 'package:ecommerce_store/services/bloc/auth_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
@@ -20,7 +26,38 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Raleway',
         textTheme: Theme.of(context).textTheme.apply(bodyColor: Colors.grey),
       ),
-      home: const WelcomeScreen(),
+      //home: const WelcomeScreen(),
+      home: BlocProvider(
+        create: (context) => AuthBloc(AuthServices()),
+        child: const Onboard(),
+      ),
+    );
+  }
+}
+
+class Onboard extends StatelessWidget {
+  const Onboard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    context.read<AuthBloc>().add(const AuthEventGetUser());
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        return;
+      },
+      builder: (context, state) {
+        if (state is AuthStateLoggedUser || state is AuthStateLoggedIn) {
+          return const ProductPage();
+        } else if (state is AuthStateLoggedOut) {
+          return const WelcomeScreen();
+        } else {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+      },
     );
   }
 }

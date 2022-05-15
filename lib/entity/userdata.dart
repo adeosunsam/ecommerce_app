@@ -49,7 +49,7 @@ class Data {
   dynamic avatar;
   String email;
   String address;
-  String phoneNumber;
+  dynamic phoneNumber;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],

@@ -1,6 +1,7 @@
 import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/entity/cart_product.dart';
 import 'package:ecommerce_store/entity/products.dart';
+import 'package:ecommerce_store/entity/userdata.dart';
 import 'package:ecommerce_store/screen/login/login_screen.dart';
 import 'package:ecommerce_store/services/authservice/auth_provider.dart';
 import 'package:ecommerce_store/utility/sharedconstant.dart';
@@ -131,7 +132,11 @@ class _BottomNavigatorState extends State<BottomNavigator> {
     final getUser =
         await AuthProvider.fromapi().getSharedPref(key: SharedConstants.user);
     bool isUserPresent = getUser != null ? true : false;
-    if (!isUserPresent && _selectedIndex == 2) {
+
+    if (isUserPresent) {
+      UserData currentUser = userFromJson(getUser);
+      widget.callbackFunction(_selectedIndex, currentUser.data);
+    } else if (!isUserPresent && _selectedIndex == 2) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -139,7 +144,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         ),
       );
     } else {
-      widget.callbackFunction(_selectedIndex);
+      widget.callbackFunction(_selectedIndex, null);
     }
   }
 }

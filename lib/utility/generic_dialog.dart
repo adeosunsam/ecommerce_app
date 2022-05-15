@@ -14,15 +14,15 @@ Future<T?> showGenericDialog<T>({
   return showDialog<T>(
     context: context,
     builder: (context) {
-      Future.delayed(const Duration(milliseconds: 1700), () {
-        Navigator.of(context).pop();
-      });
+      // Future.delayed(const Duration(milliseconds: 2500), () {
+      //   Navigator.of(context).pop();
+      // });
       return AlertDialog(
         contentPadding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
-        actionsAlignment: MainAxisAlignment.center,
+        //actionsAlignment: MainAxisAlignment.center,
         insetPadding: EdgeInsets.symmetric(horizontal: size.width * 0.15),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(13),
         ),
         title: Text(
           title ?? '',

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/utility/loading_screen_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -62,7 +63,9 @@ class LoadingScreen {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 10),
-                    const CircularProgressIndicator(),
+                    const CircularProgressIndicator(
+                      color: kPrimary,
+                    ),
                     const SizedBox(height: 20),
                     StreamBuilder(
                       stream: _text.stream,

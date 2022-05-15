@@ -44,116 +44,134 @@ class _LoginFieldState extends State<LoginField> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-      margin: EdgeInsets.only(top: size.height * 0.42),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Login',
-              style: TextStyle(
-                fontFamily: 'Raleway',
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: size.height * 0.04),
-            Row(
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/email.svg',
-                  width: 22,
-                ),
-                SizedBox(
-                  width: size.width * 0.02,
-                ),
-                const Text(
-                  'Email',
-                  style: TextStyle(
-                    fontFamily: 'Raleway',
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey,
-                  ),
-                )
-              ],
-            ),
-            InputTextField(
-              text: _email,
-              hintText: 'example@gmail.com',
-            ),
-            SizedBox(height: size.height * 0.04),
-            Row(
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/lock.svg',
-                  width: 22,
-                  color: Colors.grey,
-                ),
-                SizedBox(
-                  width: size.width * 0.02,
-                ),
-                const Text(
-                  'Password',
-                  style: TextStyle(
-                    fontFamily: 'Raleway',
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey,
-                  ),
-                )
-              ],
-            ),
-            PasswordInputField(
-              text: _password,
-              hintText: 'password',
-            ),
-            SizedBox(height: size.height * 0.03),
-            GestureDetector(
-              onTap: () {},
-              child: const Text(
-                'Forget Passcode?',
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) async {
+        if (state is AuthStateLoggedOut) {
+          if (state.exception is BadOrNoNetworkException) {
+            await showErrorDialog(context, 'Network Failure');
+          } else if (state.exception is InvalidLoginCredential) {
+            await showErrorDialog(context, 'Invalid login credential');
+          } else if (state.exception is GenericAuthException) {
+            await showErrorDialog(context, 'Authentication Error');
+          }
+        }
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: size.height * 0.42),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Login',
                 style: TextStyle(
                   fontFamily: 'Raleway',
-                  fontSize: 18,
-                  color: kPrimary,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
               ),
-            ),
-            SizedBox(height: size.height * 0.03),
-            RoundedButton(
-                press: () async {
-                  final email = _email.text;
-                  final password = _password.text;
-                  context.read<AuthBloc>().add(AuthEventLogin(
-                        email,
-                        password,
-                      ));
-                },
-                buttonColor: kPrimary,
-                textColor: Colors.white,
-                text: 'Login'),
-            SizedBox(height: size.height * 0.02),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: size.width * 0.2),
-              child: GestureDetector(
+              SizedBox(height: size.height * 0.04),
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/icons/email.svg',
+                    width: 22,
+                  ),
+                  SizedBox(
+                    width: size.width * 0.02,
+                  ),
+                  const Text(
+                    'Email',
+                    style: TextStyle(
+                      fontFamily: 'Raleway',
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  )
+                ],
+              ),
+              InputTextField(
+                text: _email,
+                hintText: 'example@gmail.com',
+              ),
+              SizedBox(height: size.height * 0.04),
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/icons/lock.svg',
+                    width: 22,
+                    color: Colors.grey,
+                  ),
+                  SizedBox(
+                    width: size.width * 0.02,
+                  ),
+                  const Text(
+                    'Password',
+                    style: TextStyle(
+                      fontFamily: 'Raleway',
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  )
+                ],
+              ),
+              PasswordInputField(
+                text: _password,
+                hintText: 'password',
+              ),
+              SizedBox(height: size.height * 0.03),
+              GestureDetector(
                 onTap: () {},
                 child: const Text(
-                  'Create account',
+                  'Forget Passcode?',
                   style: TextStyle(
                     fontFamily: 'Raleway',
-                    fontSize: 20,
+                    fontSize: 18,
                     color: kPrimary,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: size.height * 0.03),
+              RoundedButton(
+                  press: () async {
+                    final email = _email.text;
+                    final password = _password.text;
+                    if (email.isEmpty || password.isEmpty) {
+                      await showErrorDialog(
+                          context, 'email and password required');
+                    } else {
+                      context.read<AuthBloc>().add(AuthEventLogin(
+                            email,
+                            password,
+                          ));
+                    }
+                  },
+                  buttonColor: kPrimary,
+                  textColor: Colors.white,
+                  text: 'Login'),
+              SizedBox(height: size.height * 0.02),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: size.width * 0.2),
+                child: GestureDetector(
+                  onTap: () {},
+                  child: const Text(
+                    'Create account',
+                    style: TextStyle(
+                      fontFamily: 'Raleway',
+                      fontSize: 20,
+                      color: kPrimary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
