@@ -1,39 +1,23 @@
 import 'package:flutter/material.dart';
 
-class InputTextField extends StatefulWidget {
+class InputTextField extends StatelessWidget {
   final String hintText;
+  final TextEditingController? text;
 
   const InputTextField({
     Key? key,
     required this.hintText,
+    required this.text,
   }) : super(key: key);
-
-  @override
-  State<InputTextField> createState() => _InputTextFieldState();
-}
-
-class _InputTextFieldState extends State<InputTextField> {
-  late final TextEditingController _text;
-
-  @override
-  void initState() {
-    _text = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _text.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: text,
       enableSuggestions: false,
       autocorrect: false,
       decoration: InputDecoration(
-        hintText: widget.hintText,
+        hintText: hintText,
       ),
       style: const TextStyle(
         color: Colors.black,

@@ -100,6 +100,34 @@ class _BottomNavigatorState extends State<BottomNavigator> {
     setState(() {
       _selectedIndex = index;
     });
+    // context.read<AuthBloc>().add(const AuthEventGetUser());
+    // BlocConsumer<AuthBloc, AuthState>(
+    //   listener: (context, state) {
+    //     if (state.isLoading) {
+    //       LoadingScreen().show(
+    //         context: context,
+    //         text: state.loadingText ?? 'Please wait a moment',
+    //       );
+    //     } else {
+    //       LoadingScreen().hide();
+    //     }
+    //   },
+    //   builder: (context, state) {
+    //     if (state is AuthStateLoggedUser ||
+    //         state is AuthStateLoggedIn ||
+    //         _selectedIndex != 2) {
+    //       return widget.callbackFunction(_selectedIndex);
+    //     } else if (state is AuthStateLoggedOut) {
+    //       return const LoginScreen();
+    //     } else {
+    //       return const Scaffold(
+    //         body: Center(
+    //           child: CircularProgressIndicator(),
+    //         ),
+    //       );
+    //     }
+    //   },
+    // );
     final getUser =
         await AuthProvider.fromapi().getSharedPref(key: SharedConstants.user);
     bool isUserPresent = getUser != null ? true : false;

@@ -4,8 +4,14 @@ import 'package:ecommerce_store/components/text_input_field.dart';
 import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/screen/home/home_page.dart';
 import 'package:ecommerce_store/services/authservice/auth_provider.dart';
+import 'package:ecommerce_store/services/bloc/auth_bloc.dart';
+import 'package:ecommerce_store/services/bloc/auth_event.dart';
+import 'package:ecommerce_store/services/bloc/auth_state.dart';
+import 'package:ecommerce_store/utility/exception.dart';
 import 'package:ecommerce_store/utility/sharedconstant.dart';
+import 'package:ecommerce_store/utility/show_error_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class LoginField extends StatefulWidget {
@@ -18,6 +24,23 @@ class LoginField extends StatefulWidget {
 }
 
 class _LoginFieldState extends State<LoginField> {
+  late final TextEditingController _email;
+  late final TextEditingController _password;
+
+  @override
+  void initState() {
+    _email = TextEditingController();
+    _password = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -58,7 +81,8 @@ class _LoginFieldState extends State<LoginField> {
                 )
               ],
             ),
-            const InputTextField(
+            InputTextField(
+              text: _email,
               hintText: 'example@gmail.com',
             ),
             SizedBox(height: size.height * 0.04),
@@ -83,7 +107,10 @@ class _LoginFieldState extends State<LoginField> {
                 )
               ],
             ),
-            const PasswordInputField(hintText: 'password'),
+            PasswordInputField(
+              text: _password,
+              hintText: 'password',
+            ),
             SizedBox(height: size.height * 0.03),
             GestureDetector(
               onTap: () {},
@@ -100,16 +127,12 @@ class _LoginFieldState extends State<LoginField> {
             SizedBox(height: size.height * 0.03),
             RoundedButton(
                 press: () async {
-                  await AuthProvider.fromapi().setSharedPref(
-                    key: SharedConstants.user,
-                    value: 'value',
-                  );
-                  Navigator.of(context).pop();
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => const ProductPage(),
-                  //     ));
+                  final email = _email.text;
+                  final password = _password.text;
+                  context.read<AuthBloc>().add(AuthEventLogin(
+                        email,
+                        password,
+                      ));
                 },
                 buttonColor: kPrimary,
                 textColor: Colors.white,
