@@ -31,7 +31,7 @@ class _ProductImageState extends State<ProductImage> {
           height: size.height * 0.29,
           child: Column(
             children: [
-              Image.asset(
+              Image.network(
                 widget.imageSet,
               )
             ],

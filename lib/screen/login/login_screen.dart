@@ -5,6 +5,7 @@ import 'package:ecommerce_store/services/authservice/auth_service.dart';
 import 'package:ecommerce_store/services/bloc/auth_bloc.dart';
 import 'package:ecommerce_store/services/bloc/auth_event.dart';
 import 'package:ecommerce_store/services/bloc/auth_state.dart';
+import 'package:ecommerce_store/services/gadget/get_gadget.dart';
 import 'package:ecommerce_store/utility/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +16,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AuthBloc>(
-      create: (context) => AuthBloc(AuthServices()),
+      create: (context) => AuthBloc(AuthServices(), GadgetService()),
       child: const HomePage(),
     );
   }

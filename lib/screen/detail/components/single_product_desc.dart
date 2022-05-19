@@ -30,24 +30,35 @@ class _SingleProductDescriptionState extends State<SingleProductDescription> {
   onAddToCart() async {
     final readOldList =
         await AuthProvider.fromapi().getSharedPref(key: SharedConstants.cart);
-    Iterable<Product>? productPresent;
+    Iterable<CartProduct>? productPresent;
+
+    final convertProduct = CartProduct(
+      id: widget.product.id,
+      name: widget.product.name,
+      title: widget.product.title,
+      price: widget.product.price,
+      category: widget.product.category,
+      image: widget.product.image,
+      description: widget.product.description,
+      quantity: 1,
+    );
 
     if (readOldList != null) {
-      final productList = productFromJson(readOldList);
+      final productList = gadgetFromJson(readOldList);
       productPresent =
           productList.where((element) => element.id == widget.product.id);
       if (productPresent.isNotEmpty) {
         await showPresentInCartDialog(context);
       } else if (productPresent.isEmpty) {
-        productList.add(widget.product);
+        productList.add(convertProduct);
         final str = jsonEncode(productList);
         await AuthProvider.fromapi()
             .setSharedPref(key: SharedConstants.cart, value: str);
         await showAddedToCartDialog(context);
       }
     } else {
-      List<Product> newList = [];
-      newList.add(widget.product);
+      List<CartProduct> newList = [];
+      newList.add(convertProduct);
       AuthProvider.fromapi()
           .setSharedPref(key: SharedConstants.cart, value: jsonEncode(newList));
       await showAddedToCartDialog(context);

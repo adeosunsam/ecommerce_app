@@ -1,11 +1,12 @@
 import 'package:ecommerce_store/constants.dart';
-import 'package:ecommerce_store/entity/products.dart';
 import 'package:flutter/material.dart';
 
 class CategoryBuilder extends StatefulWidget {
   final Function callbackCategory;
+  final List<String> category;
   const CategoryBuilder({
     Key? key,
+    required this.category,
     required this.callbackCategory,
   }) : super(key: key);
 
@@ -14,7 +15,6 @@ class CategoryBuilder extends StatefulWidget {
 }
 
 class _CategoryBuilderState extends State<CategoryBuilder> {
-  List<String> category = getDistinctCategory();
   int selectedIndex = 0;
 
   @override
@@ -24,7 +24,7 @@ class _CategoryBuilderState extends State<CategoryBuilder> {
       margin: EdgeInsets.only(left: size.width * 0.08),
       height: size.height * 0.05,
       child: ListView.builder(
-        itemCount: category.length,
+        itemCount: widget.category.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return _categorynaigator(index);
@@ -42,15 +42,14 @@ class _CategoryBuilderState extends State<CategoryBuilder> {
           setState(() {
             selectedIndex = index;
           });
-          List<Product> productByCategory =
-              products.where((e) => e.category == category[index]).toList();
-          widget.callbackCategory(productByCategory);
+          String categoryName = widget.category[selectedIndex];
+          widget.callbackCategory(categoryName);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              category[index],
+              widget.category[index],
               style: TextStyle(
                 fontFamily: 'Raleway',
                 fontSize: 18,
@@ -60,7 +59,7 @@ class _CategoryBuilderState extends State<CategoryBuilder> {
             ),
             Container(
               height: 2,
-              width: category[index].length >= 6
+              width: widget.category[index].length >= 6
                   ? size.width * 0.15
                   : size.width * 0.1,
               margin: const EdgeInsets.only(top: 5),

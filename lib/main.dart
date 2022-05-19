@@ -4,6 +4,8 @@ import 'package:ecommerce_store/services/authservice/auth_service.dart';
 import 'package:ecommerce_store/services/bloc/auth_bloc.dart';
 import 'package:ecommerce_store/services/bloc/auth_event.dart';
 import 'package:ecommerce_store/services/bloc/auth_state.dart';
+import 'package:ecommerce_store/services/gadget/get_gadget.dart';
+import 'package:ecommerce_store/utility/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
       ),
       //home: const WelcomeScreen(),
       home: BlocProvider(
-        create: (context) => AuthBloc(AuthServices()),
+        create: (context) => AuthBloc(AuthServices(), GadgetService()),
         child: const Onboard(),
       ),
     );
@@ -42,8 +44,15 @@ class Onboard extends StatelessWidget {
   Widget build(BuildContext context) {
     context.read<AuthBloc>().add(const AuthEventGetUser());
     return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) {
-        return;
+      listener: (context, state) async {
+        if (state.isLoading) {
+          LoadingScreen().show(
+            context: context,
+            text: state.loadingText ?? 'Please wait a moment',
+          );
+        } else {
+          LoadingScreen().hide();
+        }
       },
       builder: (context, state) {
         if (state is AuthStateLoggedUser || state is AuthStateLoggedIn) {

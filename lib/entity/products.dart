@@ -1,146 +1,117 @@
 import 'dart:convert';
 
-//List<Product> productFromJson(String str) => Product.fromJson(json.decode(str));
+GadgetData gadgetDataFromJson(String str) =>
+    GadgetData.fromJson(json.decode(str));
+
+String gadgetDataToJson(GadgetData data) => json.encode(data.toJson());
 
 List<Product> productFromJson(String str) => (json.decode(str) as List<dynamic>)
     .map<Product>((product) => Product.fromJson(product))
     .toList();
 
-class Product {
-  final String image, title, description, name, category;
-  int price, quantity;
-  final int id;
-
-  Product({
-    required this.image,
-    required this.title,
-    required this.quantity,
-    required this.description,
-    required this.category,
-    required this.price,
-    required this.id,
-    required this.name,
+class GadgetData {
+  GadgetData({
+    required this.data,
+    required this.succeeded,
+    required this.message,
+    required this.statusCode,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
-        image: json['image'],
-        title: json['title'],
-        quantity: json['quantity'],
-        description: json['description'],
-        category: json['category'],
-        price: json['price'],
-        id: json['id'],
-        name: json['name'],
+  List<Product> data;
+  bool succeeded;
+  String message;
+  int statusCode;
+
+  factory GadgetData.fromJson(Map<String, dynamic> json) => GadgetData(
+        data: List<Product>.from(json["data"].map((x) => Product.fromJson(x))),
+        succeeded: json["succeeded"],
+        message: json["message"],
+        statusCode: json["statusCode"],
       );
 
   Map<String, dynamic> toJson() => {
-        'image': image,
-        'title': title,
-        'quantity': quantity,
-        'description': description,
-        'category': category,
-        'price': price,
-        'id': id,
-        'name': name,
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "succeeded": succeeded,
+        "message": message,
+        "statusCode": statusCode,
       };
 }
 
-enum ProductCategory {
-  watches,
-  gadgets,
-  laptops,
-  phones,
-  ipads,
+class Product {
+  Product({
+    required this.id,
+    required this.name,
+    required this.title,
+    required this.price,
+    required this.category,
+    required this.image,
+    required this.description,
+  });
+
+  String id, name, title, category, image, description;
+  double price;
+
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
+        id: json["id"],
+        name: json["name"],
+        title: json["title"],
+        price: json["price"].toDouble(),
+        category: json["category"],
+        image: json["image"],
+        description: json["description"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "title": title,
+        "price": price,
+        "category": category,
+        "image": image,
+        "description": description,
+      };
 }
 
-String productValues(ProductCategory product) {
-  switch (product) {
-    case ProductCategory.watches:
-      return 'Watches';
-    case ProductCategory.gadgets:
-      return 'Gadgets';
-    case ProductCategory.laptops:
-      return 'Laptops';
-    case ProductCategory.phones:
-      return 'Phones';
-    case ProductCategory.ipads:
-      return 'Ipads';
-    default:
-      return '';
-  }
+List<CartProduct> gadgetFromJson(String str) =>
+    (json.decode(str) as List<dynamic>)
+        .map<CartProduct>((product) => CartProduct.fromJson(product))
+        .toList();
+
+class CartProduct {
+  CartProduct({
+    required this.id,
+    required this.name,
+    required this.title,
+    required this.price,
+    required this.category,
+    required this.image,
+    required this.description,
+    required this.quantity,
+  });
+
+  String id, name, title, category, image, description;
+  double price;
+  int quantity;
+
+  factory CartProduct.fromJson(Map<String, dynamic> json) => CartProduct(
+        id: json["id"],
+        name: json["name"],
+        title: json["title"],
+        quantity: json["quantity"],
+        price: json["price"].toDouble(),
+        category: json["category"],
+        image: json["image"],
+        description: json["description"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "title": title,
+        "price": price,
+        "quantity": quantity,
+        "category": category,
+        "image": image,
+        "description": description,
+      };
 }
-
-List<String> getDistinctCategory() {
-  var getDistinct = <String>{};
-  return products
-      .where((e) => getDistinct.add(e.category))
-      .map((e) => e.category)
-      .toList();
-}
-
-List<Product> products = [
-  Product(
-    id: 1,
-    title: '2020 Apple iPad Air 10.9"',
-    name: 'Apple iPad',
-    category: productValues(ProductCategory.ipads),
-    quantity: 1,
-    price: 579,
-    description:
-        "Available when you purchase any new iPhone, iPad, iPod Touch, Mac or Apple TV, £4.99/month after free trial.",
-    image: "assets/images/tablet.png",
-  ),
-  Product(
-    id: 2,
-    name: "Apple Watch",
-    category: productValues(ProductCategory.watches),
-    title: '',
-    quantity: 1,
-    price: 359,
-    description: dummyText,
-    image: "assets/images/watch1.png",
-  ),
-  Product(
-    id: 3,
-    name: "Apple MacBook",
-    category: productValues(ProductCategory.laptops),
-    title: '',
-    quantity: 1,
-    price: 234,
-    description: dummyText,
-    image: "assets/images/macbook.png",
-  ),
-  Product(
-    id: 4,
-    name: "Apple iPhone",
-    category: productValues(ProductCategory.phones),
-    title: '',
-    quantity: 1,
-    price: 234,
-    description: dummyText,
-    image: "assets/images/iphone.png",
-  ),
-  Product(
-    id: 5,
-    title: "APPLE AirPods Pro - White",
-    name: 'APPLE AirPods',
-    category: productValues(ProductCategory.gadgets),
-    quantity: 1,
-    price: 234,
-    description: dummyText,
-    image: "assets/images/airpod.png",
-  ),
-  Product(
-    id: 6,
-    title: "",
-    name: 'APPLE iMac',
-    category: productValues(ProductCategory.gadgets),
-    quantity: 1,
-    price: 234,
-    description: dummyText,
-    image: "assets/images/imac.png",
-  ),
-];
-
-String dummyText =
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since. When an unknown printer took a galley.";

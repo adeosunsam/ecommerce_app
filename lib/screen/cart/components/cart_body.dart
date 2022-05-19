@@ -6,9 +6,10 @@ import 'package:ecommerce_store/screen/cart/components/set_quantity.dart';
 import 'package:ecommerce_store/services/authservice/auth_provider.dart';
 import 'package:ecommerce_store/utility/sharedconstant.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CartBody extends StatefulWidget {
-  final Product cartproduct;
+  final CartProduct cartproduct;
   final Function onCallBack;
   const CartBody({
     Key? key,
@@ -25,8 +26,8 @@ class _CartBodyState extends State<CartBody> {
     final cartList =
         await AuthProvider.fromapi().getSharedPref(key: SharedConstants.cart);
     if (cartList != null) {
-      final productList = productFromJson(cartList);
-      Product product = productList
+      final productList = gadgetFromJson(cartList);
+      CartProduct product = productList
           .firstWhere((element) => element.id == widget.cartproduct.id);
       productList.removeWhere((element) => element.id == product.id);
 
@@ -50,6 +51,7 @@ class _CartBodyState extends State<CartBody> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final formatCurrency = NumberFormat.currency(locale: "en_US");
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: size.width * .1,
@@ -66,7 +68,7 @@ class _CartBodyState extends State<CartBody> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
+            Image.network(
               widget.cartproduct.image,
               height: size.height * .23,
               width: size.width * .23,
@@ -89,11 +91,12 @@ class _CartBodyState extends State<CartBody> {
                     ),
                     SizedBox(height: size.height * .018),
                     Text(
-                      '\$${widget.cartproduct.quantity * widget.cartproduct.price}',
+                      formatCurrency.format((widget.cartproduct.quantity *
+                          widget.cartproduct.price)),
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 17,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Raleway',
+                        //fontFamily: 'Raleway',
                         color: kPrimary,
                       ),
                     ),

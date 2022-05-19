@@ -2,9 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:ecommerce_store/services/authservice/iauth_service.dart';
 import 'package:ecommerce_store/services/bloc/auth_event.dart';
 import 'package:ecommerce_store/services/bloc/auth_state.dart';
+import 'package:ecommerce_store/services/gadget/get_gadget.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc(IAuthService service)
+  AuthBloc(IAuthService service, GadgetService gadget)
       : super(
           const AuthStateUninitialized(isLoading: true),
         ) {
@@ -44,6 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         ),
       );
       try {
+        await gadget.cacheGadget();
         final user = await service.currentUser;
         if (user == null) {
           throw Exception();

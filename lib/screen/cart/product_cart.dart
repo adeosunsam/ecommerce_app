@@ -20,8 +20,8 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  List<Product> newList = [];
-  callback(List<Product> getList) {
+  List<CartProduct> newList = [];
+  callback(List<CartProduct> getList) {
     setState(() {
       newList = getList;
     });
@@ -31,7 +31,7 @@ class _CartScreenState extends State<CartScreen> {
     final cartList =
         await AuthProvider.fromapi().getSharedPref(key: SharedConstants.cart);
     if (cartList != null) {
-      final productList = productFromJson(cartList);
+      final productList = gadgetFromJson(cartList);
       newList = productList;
     }
   }
@@ -103,7 +103,7 @@ class _CartScreenState extends State<CartScreen> {
 }
 
 class CartScreenBody extends StatefulWidget {
-  final List<Product> newList;
+  final List<CartProduct> newList;
   const CartScreenBody({
     Key? key,
     required this.newList,

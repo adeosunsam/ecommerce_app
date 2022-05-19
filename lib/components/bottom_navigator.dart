@@ -1,5 +1,4 @@
 import 'package:ecommerce_store/constants.dart';
-import 'package:ecommerce_store/entity/cart_product.dart';
 import 'package:ecommerce_store/entity/products.dart';
 import 'package:ecommerce_store/entity/userdata.dart';
 import 'package:ecommerce_store/screen/login/login_screen.dart';
@@ -22,12 +21,12 @@ class BottomNavigator extends StatefulWidget {
 int _selectedIndex = 0;
 final List<String> _bottomNav = ['Home', 'heart', 'user', 'cart'];
 
-List<Product> getCartProducts = [];
+List<CartProduct> getCartProducts = [];
 onload() async {
   final cartList =
       await AuthProvider.fromapi().getSharedPref(key: SharedConstants.cart);
   if (cartList != null) {
-    final productList = productFromJson(cartList);
+    final productList = gadgetFromJson(cartList);
     getCartProducts = productList;
   } else {
     getCartProducts = [];
@@ -70,16 +69,16 @@ class _BottomNavigatorState extends State<BottomNavigator> {
               ),
               getCartProducts.isNotEmpty
                   ? Positioned(
-                      right: cartProducts.length > 9 ? 40 : 43,
-                      bottom: cartProducts.length > 9 ? 27 : 25,
+                      right: getCartProducts.length > 9 ? 40 : 43,
+                      bottom: getCartProducts.length > 9 ? 27 : 25,
                       child: Container(
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: kPrimary,
                         ),
                         child: Padding(
-                          padding:
-                              EdgeInsets.all(cartProducts.length > 9 ? 2 : 4),
+                          padding: EdgeInsets.all(
+                              getCartProducts.length > 9 ? 2 : 4),
                           child: Text(
                             '${getCartProducts.length}',
                             style: const TextStyle(

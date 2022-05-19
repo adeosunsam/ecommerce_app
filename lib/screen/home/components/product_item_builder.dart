@@ -77,12 +77,22 @@ class ItemBuider extends StatelessWidget {
           ),
           Positioned(
             left: size.width * 0.16,
-            child: Image.asset(
+            child: Image.network(
               product.image,
               width: size.width * .35,
               height: size.height * .3,
-              //scale: 2.3,
             ),
+            // child: Image(
+            //   image: NetworkImage(product.image),
+            //   width: size.width * .35,
+            //   height: size.height * .3,
+            // )
+            // child: Image.asset(
+            //   product.image,
+            //   width: size.width * .35,
+            //   height: size.height * .3,
+            //   //scale: 2.3,
+            // ),
           ),
         ],
       ),

@@ -4,6 +4,7 @@ import 'package:ecommerce_store/entity/products.dart';
 import 'package:ecommerce_store/services/authservice/auth_provider.dart';
 import 'package:ecommerce_store/utility/sharedconstant.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CartTotalPrice extends StatefulWidget {
   final String text;
@@ -19,12 +20,12 @@ class CartTotalPrice extends StatefulWidget {
 }
 
 class _CartTotalPriceState extends State<CartTotalPrice> {
-  List<Product> getCartProducts = [];
+  List<CartProduct> getCartProducts = [];
   onload() async {
     final cartList =
         await AuthProvider.fromapi().getSharedPref(key: SharedConstants.cart);
     if (cartList != null) {
-      final productList = productFromJson(cartList);
+      final productList = gadgetFromJson(cartList);
       getCartProducts = productList;
     }
   }
@@ -32,6 +33,7 @@ class _CartTotalPriceState extends State<CartTotalPrice> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final formatCurrency = NumberFormat.currency(locale: "en_US");
     return FutureBuilder(
         future: onload(),
         builder: (context, snapshot) {
@@ -54,11 +56,12 @@ class _CartTotalPriceState extends State<CartTotalPrice> {
                         ),
                       ),
                       Text(
-                        '\$${getCartProducts.fold<double>(0, (a, b) => a + (b.quantity * b.price))}',
+                        formatCurrency.format(getCartProducts.fold<double>(
+                            0, (a, b) => a + (b.quantity * b.price))),
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Raleway',
+                          // fontFamily: 'Raleway',
                           color: kPrimary,
                         ),
                       ),
