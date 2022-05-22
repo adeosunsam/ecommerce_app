@@ -37,6 +37,37 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       },
     );
+    on<GetDataEvent>(
+      (event, emit) async {
+        emit(
+          const AuthStateLoggedOut(
+            exception: null,
+            isLoading: true,
+          ),
+        );
+        try {
+          await gadget.cacheGadget();
+          // emit(
+          //   const AuthStateLoggedOut(
+          //     exception: null,
+          //     isLoading: false,
+          //   ),
+          // );
+          emit(
+            const AuthStateLoggedIn(
+              isLoading: false,
+              user: null,
+            ),
+          );
+        } on Exception catch (e) {
+          emit(
+            GetDataStateFailed(
+              exception: e,
+            ),
+          );
+        }
+      },
+    );
     on<AuthEventGetUser>((event, emit) async {
       emit(
         const AuthStateLoggedOut(
@@ -45,7 +76,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         ),
       );
       try {
-        await gadget.cacheGadget();
         final user = await service.currentUser;
         if (user == null) {
           throw Exception();

@@ -1,4 +1,5 @@
 import 'package:ecommerce_store/constants.dart';
+import 'package:ecommerce_store/main.dart';
 import 'package:ecommerce_store/screen/home/home_page.dart';
 import 'package:ecommerce_store/screen/login/components/login_fields.dart';
 import 'package:ecommerce_store/services/authservice/auth_service.dart';
@@ -31,6 +32,7 @@ class HomePage extends StatelessWidget {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state.isLoading) {
+          //LoadingWidgetPage();
           LoadingScreen().show(
             context: context,
             text: state.loadingText ?? 'Please wait a moment',
@@ -41,15 +43,16 @@ class HomePage extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is AuthStateLoggedUser || state is AuthStateLoggedIn) {
-          return const ProductPage();
+          return const ProductPage(bottomNavigatorIndex: 0);
         } else if (state is AuthStateLoggedOut) {
           return const LoginScaffold();
         } else {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return const LoadingWidgetPage();
+          // return const Scaffold(
+          //   body: Center(
+          //     child: CircularProgressIndicator(),
+          //   ),
+          // );
         }
       },
     );

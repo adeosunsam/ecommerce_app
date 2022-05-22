@@ -63,15 +63,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   bool onAdd = false;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance?.addPostFrameCallback((_) async {
-  //     await onload();
-  //     setState(() {});
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(

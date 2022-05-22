@@ -21,7 +21,7 @@ class InputTextField extends StatelessWidget {
       ),
       style: const TextStyle(
         color: Colors.black,
-        fontSize: 20,
+        fontSize: 18,
         fontFamily: 'Raleway',
         fontWeight: FontWeight.w600,
       ),

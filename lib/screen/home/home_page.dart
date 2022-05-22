@@ -9,8 +9,10 @@ import 'package:ecommerce_store/screen/sidebar/sidebar_view.dart';
 import 'package:flutter/material.dart';
 
 class ProductPage extends StatefulWidget {
+  final int? bottomNavigatorIndex;
   const ProductPage({
     Key? key,
+    this.bottomNavigatorIndex,
   }) : super(key: key);
 
   @override
@@ -42,21 +44,10 @@ class _ProductPageState extends State<ProductPage>
   }
 
   int currentIndex = 0;
-  Data _currentUser = Data(
-    address: '',
-    avatar: null,
-    email: '',
-    firstName: '',
-    id: '',
-    lastName: '',
-    phoneNumber: '',
-  );
-  callback(int index, Data? currentUser) {
+
+  callback(int index) {
     setState(() {
       currentIndex = index;
-      if (currentUser != null) {
-        _currentUser = currentUser;
-      }
     });
   }
 
@@ -83,7 +74,6 @@ class _ProductPageState extends State<ProductPage>
           scaleAnimation: _scaleAnimation,
           oncallbackFuntion: oncallback),
       UserProfileScreen(
-          currentUser: _currentUser,
           controller: _controller,
           scaleAnimation: _scaleAnimation,
           oncallbackFuntion: oncallback),
@@ -98,7 +88,10 @@ class _ProductPageState extends State<ProductPage>
         ],
       ),
       bottomNavigationBar: isClicked
-          ? BottomNavigator(callbackFunction: callback)
+          ? BottomNavigator(
+              callbackFunction: callback,
+              index: widget.bottomNavigatorIndex,
+            )
           : const Padding(padding: EdgeInsets.zero),
     );
   }

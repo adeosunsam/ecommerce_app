@@ -4,6 +4,7 @@ import 'package:ecommerce_store/screen/checkout/components/payment_method.dart';
 import 'package:ecommerce_store/screen/checkout/components/shipping_info.dart';
 import 'package:ecommerce_store/utility/pay_now_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_paystack/flutter_paystack.dart';
 
 class CheckOutScreen extends StatefulWidget {
   final int totalQuantity;
@@ -16,7 +17,16 @@ class CheckOutScreen extends StatefulWidget {
   State<CheckOutScreen> createState() => _CheckOutScreenState();
 }
 
+String paystackPublicKey = 'pk_test_4dbac798af1acd95a84e6201dd22978806d1a891';
+final plugin = PaystackPlugin();
+
 class _CheckOutScreenState extends State<CheckOutScreen> {
+  @override
+  void initState() {
+    plugin.initialize(publicKey: paystackPublicKey);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -52,7 +62,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           ),
           CartTotalPrice(
             press: () async {
-              await showPayNowDialog(context, widget.totalQuantity);
+              await showPayNowDialog(
+                context,
+                plugin,
+                widget.totalQuantity,
+              );
               // Navigator.of(context).push(PageRouteBuilder(
               //     //barrierDismissible: true,
               //     opaque: false,

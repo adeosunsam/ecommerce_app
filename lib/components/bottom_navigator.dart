@@ -9,9 +9,11 @@ import 'package:flutter_svg/svg.dart';
 
 class BottomNavigator extends StatefulWidget {
   final Function callbackFunction;
+  final int? index;
   const BottomNavigator({
     Key? key,
     required this.callbackFunction,
+    this.index,
   }) : super(key: key);
 
   @override
@@ -22,20 +24,22 @@ int _selectedIndex = 0;
 final List<String> _bottomNav = ['Home', 'heart', 'user', 'cart'];
 
 List<CartProduct> getCartProducts = [];
-onload() async {
-  final cartList =
-      await AuthProvider.fromapi().getSharedPref(key: SharedConstants.cart);
-  if (cartList != null) {
-    final productList = gadgetFromJson(cartList);
-    getCartProducts = productList;
-  } else {
-    getCartProducts = [];
-  }
-}
 
 class _BottomNavigatorState extends State<BottomNavigator> {
   @override
   Widget build(BuildContext context) {
+    onload() async {
+      //_selectedIndex = widget.index ?? _selectedIndex;
+      final cartList =
+          await AuthProvider.fromapi().getSharedPref(key: SharedConstants.cart);
+      if (cartList != null) {
+        final productList = gadgetFromJson(cartList);
+        getCartProducts = productList;
+      } else {
+        getCartProducts = [];
+      }
+    }
+
     return FutureBuilder(
         future: onload(),
         builder: (context, snapshot) {
@@ -97,45 +101,20 @@ class _BottomNavigatorState extends State<BottomNavigator> {
   }
 
   _onItemTapped(int index) async {
+    int previousIndex = _selectedIndex;
+
     setState(() {
       _selectedIndex = index;
     });
-    // context.read<AuthBloc>().add(const AuthEventGetUser());
-    // BlocConsumer<AuthBloc, AuthState>(
-    //   listener: (context, state) {
-    //     if (state.isLoading) {
-    //       LoadingScreen().show(
-    //         context: context,
-    //         text: state.loadingText ?? 'Please wait a moment',
-    //       );
-    //     } else {
-    //       LoadingScreen().hide();
-    //     }
-    //   },
-    //   builder: (context, state) {
-    //     if (state is AuthStateLoggedUser ||
-    //         state is AuthStateLoggedIn ||
-    //         _selectedIndex != 2) {
-    //       return widget.callbackFunction(_selectedIndex);
-    //     } else if (state is AuthStateLoggedOut) {
-    //       return const LoginScreen();
-    //     } else {
-    //       return const Scaffold(
-    //         body: Center(
-    //           child: CircularProgressIndicator(),
-    //         ),
-    //       );
-    //     }
-    //   },
-    // );
+
     final getUser =
         await AuthProvider.fromapi().getSharedPref(key: SharedConstants.user);
     bool isUserPresent = getUser != null ? true : false;
 
     if (isUserPresent) {
-      UserData currentUser = userFromJson(getUser);
-      widget.callbackFunction(_selectedIndex, currentUser.data);
+      widget.callbackFunction(_selectedIndex);
     } else if (!isUserPresent && _selectedIndex == 2) {
+      _selectedIndex = previousIndex;
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -143,7 +122,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         ),
       );
     } else {
-      widget.callbackFunction(_selectedIndex, null);
+      widget.callbackFunction(_selectedIndex);
     }
   }
 }

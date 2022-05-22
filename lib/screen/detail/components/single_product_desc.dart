@@ -129,7 +129,6 @@ class _SingleProductDescriptionState extends State<SingleProductDescription> {
           RoundedButton(
               press: () {
                 onAddToCart();
-                //Navigator.of(context).pop();
               },
               buttonColor: kPrimary,
               textColor: Colors.white,

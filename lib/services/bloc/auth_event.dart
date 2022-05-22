@@ -15,6 +15,10 @@ class AuthEventLogout extends AuthEvent {
   const AuthEventLogout();
 }
 
+class GetDataEvent extends AuthEvent {
+  const GetDataEvent();
+}
+
 class AuthEventGetUser extends AuthEvent {
   const AuthEventGetUser();
 }

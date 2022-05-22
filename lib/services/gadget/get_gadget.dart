@@ -23,6 +23,8 @@ class GadgetService {
     return getProduct.map((e) => e.category).toList();
   }
 
+  List<Product> get product => _products;
+
   Future cacheGadget() async {
     var getProduct = await getGadgets().then((value) => value.data);
     _products = getProduct;

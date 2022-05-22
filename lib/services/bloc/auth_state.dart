@@ -19,7 +19,7 @@ class AuthStateUninitialized extends AuthState {
 }
 
 class AuthStateLoggedIn extends AuthState {
-  final User user;
+  final User? user;
   const AuthStateLoggedIn({
     required bool isLoading,
     required this.user,
@@ -32,6 +32,13 @@ class AuthStateLoggedUser extends AuthState {
     required bool isLoading,
     required this.user,
   }) : super(isLoading: isLoading);
+}
+
+class GetDataStateFailed extends AuthState {
+  final Exception? exception;
+  const GetDataStateFailed({
+    required this.exception,
+  }) : super(isLoading: false);
 }
 
 class AuthStateLoggedOut extends AuthState with EquatableMixin {

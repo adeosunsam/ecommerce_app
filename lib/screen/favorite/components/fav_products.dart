@@ -65,7 +65,7 @@ class _FavProductsState extends State<FavProducts> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
+                Image.network(
                   favproduct.image,
                   height: size.height * .23,
                   width: size.width * .23,

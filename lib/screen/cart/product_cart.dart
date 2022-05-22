@@ -91,8 +91,6 @@ class _CartScreenState extends State<CartScreen> {
             default:
               return Container(
                 color: kbackground,
-                height: size.height,
-                width: double.infinity,
                 child: const Center(
                   child: CircularProgressIndicator(),
                 ),
