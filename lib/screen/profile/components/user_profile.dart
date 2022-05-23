@@ -1,17 +1,9 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:ecommerce_store/constants.dart';
-import 'package:ecommerce_store/entity/user.dart';
 import 'package:ecommerce_store/entity/userdata.dart';
-import 'package:ecommerce_store/services/authservice/auth_provider.dart';
-import 'package:ecommerce_store/utility/sharedconstant.dart';
+import 'package:ecommerce_store/screen/profile/components/change_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
 
 class UserProfile extends StatefulWidget {
   final Function callbackFunction;
@@ -27,86 +19,6 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  bool isLoading = false;
-  File? avatarImageFile;
-  Future getImage() async {
-    ImagePicker imagePicker = ImagePicker();
-    XFile? getImage = await imagePicker
-        .pickImage(source: ImageSource.gallery)
-        .catchError((e) {
-      Fluttertoast.showToast(msg: e.toString());
-    });
-    File? image;
-    if (getImage != null) {
-      image = File(getImage.path);
-    }
-    if (image != null) {
-      setState(() {
-        avatarImageFile = image;
-        isLoading = true;
-      });
-      uploadImage();
-    }
-  }
-
-  Future uploadImage() async {
-    final getUser = await AuthProvider.fromapi().currentUser;
-    // final token =
-    //     await AuthProvider.fromapi().getSharedPref(key: SharedConstants.token);
-    try {
-      var stream = avatarImageFile!.readAsBytes().asStream();
-
-      var length = avatarImageFile!.lengthSync();
-
-      var url = Uri.parse(
-          'https://restaurantbookingapi.herokuapp.com/api/v1/Gadget/add-image');
-      var request = http.MultipartRequest('POST', url);
-      request.fields['Id'] = getUser!.data.id;
-      Map<String, String> headers = {"Content-type": "multipart/form-data"};
-      var multiport = http.MultipartFile(
-        'image',
-        stream,
-        length,
-        filename: avatarImageFile!.path.split('/').last,
-      );
-
-      request.files.add(multiport);
-      request.headers.addAll(headers);
-      request.send().then((response) async {
-        if (response.statusCode == 200) {
-          var responseData = await response.stream.toBytes();
-          var responseString = String.fromCharCodes(responseData);
-          var user = userTokenFromJson(responseString);
-          if (user.succeeded) {
-            final userJson = await AuthProvider.fromapi()
-                .getSharedPref(key: SharedConstants.user);
-            if (userJson != null) {
-              final userData = userFromJson(userJson);
-              userData.data.avatar = user.data;
-              AuthProvider.fromapi().setSharedPref(
-                  key: SharedConstants.user, value: jsonEncode(userData));
-            }
-            Fluttertoast.showToast(
-              msg: user.message,
-              backgroundColor: Colors.grey,
-            );
-          } else {
-            Fluttertoast.showToast(
-              msg: user.message,
-              backgroundColor: Colors.grey,
-            );
-          }
-          widget.callbackFunction();
-        }
-      });
-    } catch (_) {
-      Fluttertoast.showToast(
-        msg: "Unable to upload file, try again",
-        backgroundColor: Colors.grey,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -131,63 +43,31 @@ class _UserProfileState extends State<UserProfile> {
           Positioned(
             top: size.height * -.05,
             child: CupertinoButton(
-              onPressed: getImage,
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditImage(
+                      onCallbackFunction: widget.callbackFunction,
+                      imagePath: widget.userdata.avatar,
+                    ),
+                  )),
               child: Container(
                 margin: const EdgeInsets.all(20),
-                child: avatarImageFile == null
-                    ? widget.userdata.avatar != null
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(45),
-                            child: Image.network(
-                              widget.userdata.avatar,
-                              fit: BoxFit.cover,
-                              width: 75,
-                              height: 75,
-                              errorBuilder: (context, object, stackTrace) {
-                                return const Icon(
-                                  Icons.account_circle,
-                                  size: 90,
-                                  color: kPrimary,
-                                );
-                              },
-                              loadingBuilder: (context, Widget child,
-                                  ImageChunkEvent? loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return SizedBox(
-                                  width: 75,
-                                  height: 75,
-                                  child: Container(
-                                    color: Colors.grey,
-                                    child: Center(
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                        value: loadingProgress
-                                                    .expectedTotalBytes !=
-                                                null
-                                            ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                loadingProgress
-                                                    .expectedTotalBytes!
-                                            : null,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          )
-                        : const Icon(
-                            Icons.account_circle,
-                            size: 75,
-                            color: kPrimary,
-                          )
-                    : ClipRRect(
+                child: widget.userdata.avatar != null
+                    ? ClipRRect(
                         borderRadius: BorderRadius.circular(45),
                         child: Image.network(
                           widget.userdata.avatar,
                           fit: BoxFit.cover,
                           width: 75,
                           height: 75,
+                          errorBuilder: (context, object, stackTrace) {
+                            return const Icon(
+                              Icons.account_circle,
+                              size: 90,
+                              color: kPrimary,
+                            );
+                          },
                           loadingBuilder: (context, Widget child,
                               ImageChunkEvent? loadingProgress) {
                             if (loadingProgress == null) return child;
@@ -211,6 +91,10 @@ class _UserProfileState extends State<UserProfile> {
                             );
                           },
                         ),
+                      )
+                    : const Icon(
+                        Icons.account_circle,
+                        size: 90,
                       ),
               ),
             ),
