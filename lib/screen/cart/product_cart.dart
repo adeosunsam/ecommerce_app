@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/entity/products.dart';
 import 'package:ecommerce_store/screen/cart/components/cart_body.dart';
@@ -25,6 +27,10 @@ class _CartScreenState extends State<CartScreen> {
     setState(() {
       newList = getList;
     });
+  }
+
+  callbackDeleteOne() {
+    setState(() {});
   }
 
   onLoadCartProducts() async {
@@ -80,7 +86,11 @@ class _CartScreenState extends State<CartScreen> {
                   ],
                 ),
                 body: newList.isNotEmpty
-                    ? CartScreenBody(newList: newList)
+                    ? CartScreenBody(
+                        newList: newList,
+                        onCallBackFunction: callbackDeleteOne,
+                        callCountFunction: widget.callbackFunction,
+                      )
                     : EmptyScreen(
                         errorImage: Image.asset('assets/images/cartempty.png'),
                         press: () {},
@@ -102,9 +112,13 @@ class _CartScreenState extends State<CartScreen> {
 
 class CartScreenBody extends StatefulWidget {
   final List<CartProduct> newList;
+  final Function onCallBackFunction;
+  final Function callCountFunction;
   const CartScreenBody({
     Key? key,
     required this.newList,
+    required this.onCallBackFunction,
+    required this.callCountFunction,
   }) : super(key: key);
 
   @override
@@ -114,6 +128,18 @@ class CartScreenBody extends StatefulWidget {
 class _CartScreenBodyState extends State<CartScreenBody> {
   callbackvoid() {
     setState(() {});
+  }
+
+  deleteOneItem(String id) {
+    widget.newList.removeWhere((element) => element.id == id);
+    AuthProvider.fromapi().setSharedPref(
+        key: SharedConstants.cart, value: jsonEncode(widget.newList));
+    if (widget.newList.isEmpty) {
+      widget.onCallBackFunction();
+    } else {
+      setState(() {});
+    }
+    widget.callCountFunction();
   }
 
   @override
@@ -129,6 +155,7 @@ class _CartScreenBodyState extends State<CartScreenBody> {
                 return CartBody(
                   cartproduct: e,
                   onCallBack: callbackvoid,
+                  onCallBackFunction: deleteOneItem,
                 );
               }).toList(),
             ),

@@ -101,7 +101,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
   }
 
   _onItemTapped(int index) async {
-    int previousIndex = _selectedIndex;
+    //int previousIndex = _selectedIndex;
 
     setState(() {
       _selectedIndex = index;
@@ -114,7 +114,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
     if (isUserPresent) {
       widget.callbackFunction(_selectedIndex);
     } else if (!isUserPresent && _selectedIndex == 2) {
-      _selectedIndex = previousIndex;
+      //_selectedIndex = previousIndex;
       Navigator.push(
         context,
         MaterialPageRoute(

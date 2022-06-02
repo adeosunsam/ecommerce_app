@@ -11,10 +11,12 @@ import 'package:intl/intl.dart';
 class CartBody extends StatefulWidget {
   final CartProduct cartproduct;
   final Function onCallBack;
+  final Function onCallBackFunction;
   const CartBody({
     Key? key,
     required this.cartproduct,
     required this.onCallBack,
+    required this.onCallBackFunction,
   }) : super(key: key);
 
   @override
@@ -57,7 +59,7 @@ class _CartBodyState extends State<CartBody> {
         horizontal: size.width * .1,
         vertical: size.height * .01,
       ),
-      height: size.height * .17,
+      height: size.height * .18,
       width: size.width * .8,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -65,78 +67,113 @@ class _CartBodyState extends State<CartBody> {
       ),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
           children: [
-            Image.network(
-              widget.cartproduct.image,
-              height: size.height * .23,
-              width: size.width * .23,
+            Container(
+              padding: const EdgeInsets.only(top: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.network(
+                    widget.cartproduct.image,
+                    height: size.height * .23,
+                    width: size.width * .23,
+                  ),
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: size.height * .02),
+                          Text(
+                            widget.cartproduct.title,
+                            style: const TextStyle(
+                              fontFamily: 'Raleway',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                          SizedBox(height: size.height * .018),
+                          Text(
+                            formatCurrency.format((widget.cartproduct.quantity *
+                                widget.cartproduct.price)),
+                            style: const TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              //fontFamily: 'Raleway',
+                              color: kPrimary,
+                            ),
+                          ),
+                          SizedBox(height: size.height * .016),
+                          Row(
+                            children: [
+                              const Text(
+                                'Quantity',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: 'Raleway',
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(width: size.width * .02),
+                              Quantity(
+                                oncallTotalPrice: widget.onCallBack,
+                                oncallBackFunction: callback,
+                                icon: Icons.remove,
+                              ),
+                              SizedBox(width: size.width * .02),
+                              Text(
+                                '${widget.cartproduct.quantity}',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontFamily: 'Raleway',
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(width: size.width * .02),
+                              Quantity(
+                                oncallTotalPrice: widget.onCallBack,
+                                oncallBackFunction: callback,
+                                icon: Icons.add,
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(left: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: size.height * .02),
-                    Text(
-                      widget.cartproduct.title,
-                      style: const TextStyle(
-                        fontFamily: 'Raleway',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
-                    ),
-                    SizedBox(height: size.height * .018),
-                    Text(
-                      formatCurrency.format((widget.cartproduct.quantity *
-                          widget.cartproduct.price)),
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                        //fontFamily: 'Raleway',
-                        color: kPrimary,
-                      ),
-                    ),
-                    SizedBox(height: size.height * .016),
-                    Row(
-                      children: [
-                        const Text(
-                          'Quantity',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'Raleway',
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        ),
-                        SizedBox(width: size.width * .02),
-                        Quantity(
-                          oncallTotalPrice: widget.onCallBack,
-                          oncallBackFunction: callback,
-                          icon: Icons.remove,
-                        ),
-                        SizedBox(width: size.width * .02),
-                        Text(
-                          '${widget.cartproduct.quantity}',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontFamily: 'Raleway',
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
-                        SizedBox(width: size.width * .02),
-                        Quantity(
-                          oncallTotalPrice: widget.onCallBack,
-                          oncallBackFunction: callback,
-                          icon: Icons.add,
-                        ),
-                      ],
-                    )
-                  ],
+            Positioned(
+              right: 0,
+              top: 5,
+              child: GestureDetector(
+                onTap: () {
+                  //newList.removeWhere((element) => element.id == favproduct.id);
+
+                  // AuthProvider.fromapi().setSharedPref(
+                  //     key: SharedConstants.fav, value: jsonEncode(newList));
+                  // if (newList.isEmpty) {
+                  //   //widget.onCallBackFunction();
+                  // } else {
+                  //   setState(() {});
+                  // }
+                  widget.onCallBackFunction(widget.cartproduct.id);
+                },
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: kPrimary,
+                  ),
+                  child: const Icon(
+                    Icons.clear_rounded,
+                    color: Colors.white,
+                    size: 17,
+                  ),
                 ),
               ),
             ),

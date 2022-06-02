@@ -127,56 +127,53 @@ class _EditImageState extends State<EditImage> {
           ),
         ],
       ),
-      body: GestureDetector(
-        onTap: getImage,
-        child: Center(
-          heightFactor: size.height * .5,
-          widthFactor: double.infinity,
-          child: Hero(
-            tag: 'imageHero',
-            child: avatarImageFile == null
-                ? widget.imagePath.isNotEmpty
-                    ? Image.network(
-                        widget.imagePath,
-                        fit: BoxFit.cover,
-                        height: size.height * .5,
-                        width: size.width,
-                        errorBuilder: (context, object, stackTrace) {
-                          return const Icon(
-                            Icons.account_circle,
-                            color: kPrimary,
-                          );
-                        },
-                        loadingBuilder: (context, Widget child,
-                            ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return SizedBox(
-                            child: Container(
-                              color: Colors.grey,
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  value: loadingProgress.expectedTotalBytes !=
-                                          null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null,
-                                ),
+      body: Center(
+        heightFactor: size.height * .5,
+        widthFactor: double.infinity,
+        child: Hero(
+          tag: 'imageHero',
+          child: avatarImageFile == null
+              ? widget.imagePath.isNotEmpty
+                  ? Image.network(
+                      widget.imagePath,
+                      fit: BoxFit.cover,
+                      height: size.height * .5,
+                      width: size.width,
+                      errorBuilder: (context, object, stackTrace) {
+                        return const Icon(
+                          Icons.account_circle,
+                          color: kPrimary,
+                        );
+                      },
+                      loadingBuilder: (context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return SizedBox(
+                          child: Container(
+                            color: Colors.grey,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
                               ),
                             ),
-                          );
-                        },
-                      )
-                    : const Icon(
-                        Icons.person,
-                      )
-                : Image.file(
-                    avatarImageFile!,
-                    fit: BoxFit.cover,
-                    height: size.height * .5,
-                    width: size.width,
-                  ),
-          ),
+                          ),
+                        );
+                      },
+                    )
+                  : const Icon(
+                      Icons.person,
+                    )
+              : Image.file(
+                  avatarImageFile!,
+                  fit: BoxFit.cover,
+                  height: size.height * .5,
+                  width: size.width,
+                ),
         ),
       ),
     );
