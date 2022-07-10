@@ -3,7 +3,6 @@ import 'package:ecommerce_store/entity/userdata.dart';
 import 'package:ecommerce_store/screen/cart/components/cart_total.dart';
 import 'package:ecommerce_store/screen/home/home_page.dart';
 import 'package:ecommerce_store/services/authservice/auth_provider.dart';
-import 'package:ecommerce_store/services/authservice/auth_service.dart';
 import 'package:ecommerce_store/utility/sharedconstant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
@@ -11,8 +10,6 @@ import 'package:http/http.dart' as http;
 
 import 'dart:async';
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 
 Future showPayNowDialog(
   BuildContext context,
@@ -85,8 +82,9 @@ Future showPayNowDialog(
                     ),
                   ),
                   CartTotalPrice(
-                      text: 'Pay now',
-                      press: () => _handleCheckout(context, _plugin)),
+                    text: 'Pay now',
+                    press: () => _handleCheckout(context, _plugin),
+                  ),
                 ],
               ),
             ),
@@ -302,7 +300,7 @@ class MyLogo extends StatelessWidget {
       alignment: Alignment.center,
       padding: const EdgeInsets.all(10),
       child: const Text(
-        "CO",
+        "SA",
         style: TextStyle(
           color: Colors.white,
           fontSize: 13,

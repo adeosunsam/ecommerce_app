@@ -14,34 +14,44 @@ class ProductImage extends StatefulWidget {
 
 List<String> imageurl = [
   '',
-  'assets/images/product2.png',
   'assets/images/start.png',
 ];
 int _selectedIndex = 0;
-String path = imageurl[0];
 
 class _ProductImageState extends State<ProductImage> {
+  final PageController _pageController = PageController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Column(
       children: [
         SizedBox(
-          width: size.width * 0.48,
-          height: size.height * 0.29,
-          child: Column(
+          width: double.infinity,
+          height: size.height * 0.25,
+          child: PageView(
+            controller: _pageController,
+            onPageChanged: (page) {
+              setState(() {
+                _selectedIndex = page;
+              });
+            },
             children: [
-              Image.network(
-                widget.imageSet,
-              )
+              for (int i = 0; i < imageurl.length; i++)
+                Image.network(
+                  widget.imageSet,
+                ),
             ],
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: imageurl.map((e) {
-            return productimage(imageurl.indexOf(e));
-          }).toList(),
+        SizedBox(
+          height: size.height * 0.05,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: imageurl.map((e) {
+              return productimage(imageurl.indexOf(e));
+            }).toList(),
+          ),
         ),
       ],
     );
@@ -52,7 +62,7 @@ class _ProductImageState extends State<ProductImage> {
       onTap: () {
         setState(() {
           _selectedIndex = index;
-          path = imageurl[_selectedIndex];
+          _pageController.jumpToPage(index);
         });
       },
       child: Container(

@@ -6,7 +6,7 @@ typedef DialogOptionBuilder<T> = Map<String, T?> Function();
 Future<T?> showGenericDialog<T>({
   required BuildContext context,
   String? title,
-  required String content,
+  required String? content,
   required DialogOptionBuilder optionBuilder,
 }) {
   Size size = MediaQuery.of(context).size;
@@ -14,15 +14,15 @@ Future<T?> showGenericDialog<T>({
   return showDialog<T>(
     context: context,
     builder: (context) {
-      // Future.delayed(const Duration(milliseconds: 2500), () {
-      //   Navigator.of(context).pop();
-      // });
+      Future.delayed(const Duration(milliseconds: 2600), () {
+        Navigator.of(context).pop();
+      });
       return AlertDialog(
         contentPadding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
         //actionsAlignment: MainAxisAlignment.center,
         insetPadding: EdgeInsets.symmetric(horizontal: size.width * 0.15),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(13),
+          borderRadius: BorderRadius.circular(8),
         ),
         title: Text(
           title ?? '',
@@ -35,11 +35,11 @@ Future<T?> showGenericDialog<T>({
           textAlign: TextAlign.center,
         ),
         content: Text(
-          content,
+          content ?? '',
           style: const TextStyle(
             color: Colors.black,
             fontFamily: 'Raleway',
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
           ),
           textAlign: TextAlign.center,
         ),

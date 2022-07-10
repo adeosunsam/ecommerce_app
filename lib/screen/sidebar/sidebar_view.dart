@@ -2,7 +2,10 @@ import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/screen/login/login_screen.dart';
 import 'package:ecommerce_store/screen/sidebar/components/sidebar_menu.dart';
 import 'package:ecommerce_store/services/authservice/auth_provider.dart';
+import 'package:ecommerce_store/services/bloc/auth_bloc.dart';
+import 'package:ecommerce_store/services/bloc/auth_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class SideBarScreen extends StatelessWidget {
@@ -52,12 +55,16 @@ class Page extends StatelessWidget {
                       SizedBox(width: size.width * .025),
                       InkWell(
                         onTap: () {
-                          AuthProvider.fromapi().logOut();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const LoginScreen(),
-                              ));
+                          //AuthProvider.fromapi().logOut();
+                          context.read<AuthBloc>().add(
+                                const AuthEventLogout(),
+                              );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => const LoginScreen(),
+                          //   ),
+                          // );
                         },
                         child: const Text(
                           'Sign out',

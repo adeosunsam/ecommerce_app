@@ -51,6 +51,7 @@ class _CartScreenState extends State<CartScreen> {
           switch (snapshot.connectionState) {
             case ConnectionState.active:
             case ConnectionState.done:
+            case ConnectionState.waiting:
               return Scaffold(
                 backgroundColor: kbackground,
                 appBar: AppBar(
@@ -70,6 +71,9 @@ class _CartScreenState extends State<CartScreen> {
                   actions: [
                     GestureDetector(
                       onTap: () {
+                        if (newList.isEmpty) {
+                          return;
+                        }
                         AuthProvider.fromapi()
                             .removePref(key: SharedConstants.cart);
                         newList = [];
@@ -91,18 +95,27 @@ class _CartScreenState extends State<CartScreen> {
                         onCallBackFunction: callbackDeleteOne,
                         callCountFunction: widget.callbackFunction,
                       )
-                    : EmptyScreen(
-                        errorImage: Image.asset('assets/images/cartempty.png'),
-                        press: () {},
-                        title: 'Your cart is empty!',
-                      ),
+                    : snapshot.connectionState == ConnectionState.done
+                        ? EmptyScreen(
+                            errorImage:
+                                Image.asset('assets/images/cartempty.png'),
+                            press: () {},
+                            title: 'Your cart is empty!',
+                          )
+                        : const Center(
+                            child: CircularProgressIndicator(
+                              color: kPrimary,
+                            ),
+                          ),
               );
 
             default:
               return Container(
                 color: kbackground,
                 child: const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    color: kPrimary,
+                  ),
                 ),
               );
           }
@@ -162,15 +175,17 @@ class _CartScreenBodyState extends State<CartScreenBody> {
           ),
         ),
         CartTotalPrice(
-          press: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CheckOutScreen(
-                totalQuantity:
-                    widget.newList.fold<int>(0, (a, b) => a + b.quantity),
+          press: () async {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CheckOutScreen(
+                  totalQuantity:
+                      widget.newList.fold<int>(0, (a, b) => a + b.quantity),
+                ),
               ),
-            ),
-          ),
+            );
+          },
           text: 'Checkout',
         ),
       ],

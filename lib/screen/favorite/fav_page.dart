@@ -49,6 +49,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           switch (snapshot.connectionState) {
             case ConnectionState.active:
             case ConnectionState.done:
+            case ConnectionState.waiting:
               return AnimatedPositioned(
                 top: 0,
                 bottom: 0,
@@ -111,12 +112,19 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                             height: size.height * .78,
                             child: hasData
                                 ? FavProducts(onCallBackFunction: callback)
-                                : EmptyScreen(
-                                    errorImage:
-                                        Image.asset('assets/images/fav.png'),
-                                    press: () {},
-                                    title: 'No favourites yet',
-                                  ),
+                                : snapshot.connectionState ==
+                                        ConnectionState.done
+                                    ? EmptyScreen(
+                                        errorImage: Image.asset(
+                                            'assets/images/fav.png'),
+                                        press: () {},
+                                        title: 'No favourites yet',
+                                      )
+                                    : const Center(
+                                        child: CircularProgressIndicator(
+                                          color: kPrimary,
+                                        ),
+                                      ),
                           ),
                         ],
                       ),

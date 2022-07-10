@@ -4,6 +4,7 @@ import 'package:ecommerce_store/entity/products.dart';
 import 'package:ecommerce_store/screen/home/components/category_builder.dart';
 import 'package:ecommerce_store/screen/home/components/product_items.dart';
 import 'package:ecommerce_store/services/gadget/get_gadget.dart';
+import 'package:ecommerce_store/utility/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -39,6 +40,7 @@ class _BodyState extends State<Body> {
   void initState() {
     super.initState();
     gadgetService = GadgetService();
+    gadgetService.cacheGadget();
   }
 
   @override
@@ -74,6 +76,15 @@ class _BodyState extends State<Body> {
                         .where((e) => getDistinct.add(e.category.toLowerCase()))
                         .map((e) => e.category)
                         .toList();
+                    if (snapshot.connectionState == ConnectionState.active &&
+                        result.isEmpty) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: kPrimary,
+                          backgroundColor: Colors.transparent,
+                        ),
+                      );
+                    }
                     return SingleChildScrollView(
                       child: SafeArea(
                         child: Column(

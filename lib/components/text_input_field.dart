@@ -18,12 +18,15 @@ class InputTextField extends StatelessWidget {
       autocorrect: false,
       decoration: InputDecoration(
         hintText: hintText,
+        hintStyle: const TextStyle(
+          fontWeight: FontWeight.w500,
+        ),
       ),
       style: const TextStyle(
         color: Colors.black,
         fontSize: 18,
         fontFamily: 'Raleway',
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w500,
       ),
       keyboardType: TextInputType.emailAddress,
     );

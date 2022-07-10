@@ -12,7 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
 class EditImage extends StatefulWidget {
-  final String imagePath;
+  final String? imagePath;
   final Function onCallbackFunction;
   const EditImage({
     Key? key,
@@ -133,40 +133,45 @@ class _EditImageState extends State<EditImage> {
         child: Hero(
           tag: 'imageHero',
           child: avatarImageFile == null
-              ? widget.imagePath.isNotEmpty
-                  ? Image.network(
-                      widget.imagePath,
-                      fit: BoxFit.cover,
-                      height: size.height * .5,
-                      width: size.width,
-                      errorBuilder: (context, object, stackTrace) {
-                        return const Icon(
-                          Icons.account_circle,
-                          color: kPrimary,
-                        );
-                      },
-                      loadingBuilder: (context, Widget child,
-                          ImageChunkEvent? loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return SizedBox(
-                          child: Container(
-                            color: Colors.grey,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
+              ? widget.imagePath != null
+                  ? widget.imagePath!.isNotEmpty
+                      ? Image.network(
+                          widget.imagePath!,
+                          fit: BoxFit.cover,
+                          height: size.height * .5,
+                          width: size.width,
+                          errorBuilder: (context, object, stackTrace) {
+                            return const Icon(
+                              Icons.account_circle,
+                              color: kPrimary,
+                            );
+                          },
+                          loadingBuilder: (context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return SizedBox(
+                              child: Container(
+                                color: Colors.grey,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        );
-                      },
-                    )
-                  : const Icon(
-                      Icons.person,
+                            );
+                          },
+                        )
+                      : Image.asset(
+                          'assets/images/avatar.jpg',
+                        )
+                  : Image.asset(
+                      'assets/images/avatar.jpg',
                     )
               : Image.file(
                   avatarImageFile!,

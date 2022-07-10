@@ -2,13 +2,10 @@ import 'package:ecommerce_store/components/password_input_field.dart';
 import 'package:ecommerce_store/components/rounded_button.dart';
 import 'package:ecommerce_store/components/text_input_field.dart';
 import 'package:ecommerce_store/constants.dart';
-import 'package:ecommerce_store/screen/home/home_page.dart';
-import 'package:ecommerce_store/services/authservice/auth_provider.dart';
 import 'package:ecommerce_store/services/bloc/auth_bloc.dart';
 import 'package:ecommerce_store/services/bloc/auth_event.dart';
 import 'package:ecommerce_store/services/bloc/auth_state.dart';
 import 'package:ecommerce_store/utility/exception.dart';
-import 'package:ecommerce_store/utility/sharedconstant.dart';
 import 'package:ecommerce_store/utility/show_error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -145,18 +142,20 @@ class _LoginFieldState extends State<LoginField> {
                       await showErrorDialog(
                           context, 'email and password required');
                     } else {
-                      context.read<AuthBloc>().add(AuthEventLogin(
-                            email,
-                            password,
-                          ));
+                      context.read<AuthBloc>().add(
+                            AuthEventLogin(
+                              email,
+                              password,
+                            ),
+                          );
                     }
                   },
                   buttonColor: kPrimary,
                   textColor: Colors.white,
                   text: 'Login'),
               SizedBox(height: size.height * 0.02),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: size.width * 0.2),
+              Align(
+                alignment: Alignment.center,
                 child: GestureDetector(
                   onTap: () {},
                   child: const Text(

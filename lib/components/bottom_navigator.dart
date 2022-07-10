@@ -1,7 +1,5 @@
 import 'package:ecommerce_store/constants.dart';
 import 'package:ecommerce_store/entity/products.dart';
-import 'package:ecommerce_store/entity/userdata.dart';
-import 'package:ecommerce_store/screen/login/login_screen.dart';
 import 'package:ecommerce_store/services/authservice/auth_provider.dart';
 import 'package:ecommerce_store/utility/sharedconstant.dart';
 import 'package:flutter/material.dart';
@@ -9,27 +7,26 @@ import 'package:flutter_svg/svg.dart';
 
 class BottomNavigator extends StatefulWidget {
   final Function callbackFunction;
-  final int? index;
+  final int index;
   const BottomNavigator({
     Key? key,
     required this.callbackFunction,
-    this.index,
+    required this.index,
   }) : super(key: key);
 
   @override
   State<BottomNavigator> createState() => _BottomNavigatorState();
 }
 
-int _selectedIndex = 0;
-final List<String> _bottomNav = ['Home', 'heart', 'user', 'cart'];
+final List<String> _bottomNav = ['home', 'heart', 'user', 'cart'];
 
 List<CartProduct> getCartProducts = [];
+//int _selectedIndex = 0;
 
 class _BottomNavigatorState extends State<BottomNavigator> {
   @override
   Widget build(BuildContext context) {
     onload() async {
-      //_selectedIndex = widget.index ?? _selectedIndex;
       final cartList =
           await AuthProvider.fromapi().getSharedPref(key: SharedConstants.cart);
       if (cartList != null) {
@@ -48,7 +45,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: BottomNavigationBar(
-                  currentIndex: _selectedIndex,
+                  currentIndex: widget.index,
                   elevation: 0,
                   showSelectedLabels: false,
                   showUnselectedLabels: false,
@@ -61,10 +58,12 @@ class _BottomNavigatorState extends State<BottomNavigator> {
                           label: e,
                           icon: SvgPicture.asset(
                             'assets/icons/$e.svg',
-                            color: _selectedIndex == _bottomNav.indexOf(e)
-                                ? kPrimary
-                                : Colors.black,
                           ),
+                          activeIcon: SvgPicture.asset(
+                            'assets/icons/$e.svg',
+                            color: kPrimary,
+                          ),
+                          backgroundColor: kPrimary,
                         ),
                       )
                       .toList(),
@@ -101,28 +100,9 @@ class _BottomNavigatorState extends State<BottomNavigator> {
   }
 
   _onItemTapped(int index) async {
-    //int previousIndex = _selectedIndex;
-
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    final getUser =
-        await AuthProvider.fromapi().getSharedPref(key: SharedConstants.user);
-    bool isUserPresent = getUser != null ? true : false;
-
-    if (isUserPresent) {
-      widget.callbackFunction(_selectedIndex);
-    } else if (!isUserPresent && _selectedIndex == 2) {
-      //_selectedIndex = previousIndex;
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
-        ),
-      );
-    } else {
-      widget.callbackFunction(_selectedIndex);
+    if (widget.index == index) {
+      return;
     }
+    widget.callbackFunction(index);
   }
 }

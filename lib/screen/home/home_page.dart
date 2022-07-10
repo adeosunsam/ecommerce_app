@@ -1,6 +1,5 @@
 import 'package:ecommerce_store/components/bottom_navigator.dart';
 import 'package:ecommerce_store/constants.dart';
-import 'package:ecommerce_store/entity/userdata.dart';
 import 'package:ecommerce_store/screen/cart/product_cart.dart';
 import 'package:ecommerce_store/screen/favorite/fav_page.dart';
 import 'package:ecommerce_store/screen/home/components/product.dart';
@@ -90,7 +89,7 @@ class _ProductPageState extends State<ProductPage>
       bottomNavigationBar: isClicked
           ? BottomNavigator(
               callbackFunction: callback,
-              index: widget.bottomNavigatorIndex,
+              index: currentIndex,
             )
           : const Padding(padding: EdgeInsets.zero),
     );

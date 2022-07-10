@@ -1,3 +1,4 @@
+import 'package:ecommerce_store/constants.dart';
 import 'package:flutter/material.dart';
 
 class Quantity extends StatelessWidget {
@@ -26,7 +27,7 @@ class Quantity extends StatelessWidget {
         height: 19,
         width: 19,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4), color: Colors.blueAccent),
+            borderRadius: BorderRadius.circular(4), color: kPrimary),
         child: Icon(
           icon,
           color: Colors.white,
